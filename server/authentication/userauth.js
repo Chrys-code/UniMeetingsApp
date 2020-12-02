@@ -116,7 +116,7 @@ router.post("/account/signin", (req, res, next) => {
       if (users.length != 1) {
         return res.send({
           sucess: false,
-          message: "Error: Invalid user length",
+          message: "Error: Invalid username",
         });
       }
 
@@ -124,7 +124,7 @@ router.post("/account/signin", (req, res, next) => {
       if (!user.validPassword(password)) {
         return res.send({
           sucess: false,
-          message: "Error: Invalid Password!",
+          message: "Error: Invalid Username or Password!",
         });
       }
 
@@ -134,7 +134,7 @@ router.post("/account/signin", (req, res, next) => {
         if (err) {
           return res.send({
             sucess: false,
-            message: "Error: User session could not be created.",
+            message: "Error: Internal server error when trying to create User session.",
           });
         }
 

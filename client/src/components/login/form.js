@@ -2,7 +2,8 @@ import React from 'react'
 // Server Imports
 
 export function Form(props) {
-    const {schoolsData, inputHandlers} = props;
+
+    const {schoolsData, inputHandlers, signInErr} = props;
 
     function displaySchools() {
         var data = schoolsData;
@@ -42,6 +43,8 @@ export function Form(props) {
                         </div>
                         <input name="password" type="text" placeholder="Password" onChange={(e)=>inputHandlers.passwordInputHandler(e)}/>
                     </div>
+
+                        {signInErr &&  <p>{signInErr}</p>}
 
                     <div className="field">
                         <button className="login_button">Login</button>

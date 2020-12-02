@@ -24,7 +24,11 @@ const StudentType = new GraphQLObjectType({
         event: {
             type: EventType,
             resolve(parent, args) {
-                return Event.findById(parent.eventId)
+                if(parent.eventId){
+                    return Event.findById(parent.eventId)
+                } else {
+                    return null
+                }
             }
         },
         school: {

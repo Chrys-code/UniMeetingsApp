@@ -1,9 +1,9 @@
+/*
 import React, { useState, useEffect } from 'react'
 import './loginStyle.scss';
 // Server Imports
 import {graphql} from 'react-apollo'
-import {getSchoolsQuery, getStudentQuery} from "../../queries/loginqueries";
-import { useLazyQuery } from 'react-apollo';
+import {getSchoolsQuery} from "../../queries/loginqueries";
 // Verify User: Token
 import { getFromStorage, setInStorage } from "../../utils/storage";
 // Components
@@ -11,6 +11,7 @@ import Form from "./form";
 
 function Login(props) {
 
+const { setUserStatus, setUid } = props;
 
 const [schoolId, setSchoolId] = useState('');
 const [name, setName] = useState('');
@@ -18,11 +19,6 @@ const [password, setPassword] = useState('');
 const [isLoading, setIsLoading] = useState(true);
 const [signInErr, setSignInErr] = useState('');
 const [token, setToken] = useState('');
-const [getStudent, { loading, data }] = useLazyQuery(getStudentQuery);
-
-if (data ) {
-  console.log(data);
-}
 
     ////////////////////////////////
     // Lifecycle Methods
@@ -56,7 +52,7 @@ if (data ) {
     ////////////////////////////////
     // Trusted Events
     ////////////////////////////////
-    // Log-In user & set Token
+    // Log-In user & set Token // Sending token within HEAD would be more safe
     ////////////////////////////////
 
     async function onSignIn(e) {
@@ -75,23 +71,16 @@ if (data ) {
         })
           .then((res) => res.json())
           .then((json) => {
-            console.log(json);
             if (json.success) {
 
               const id = json.id;
-              console.log(id)
-
+              setUid(id);
               setSignInErr(json.message);
               setIsLoading(false);
-              setName("");
-              setPassword("");
-              setSchoolId("");
               setToken(json.token);
               setInStorage("login_app", { token: json.token });
-
-              getStudent({options: ()=> { return {variables: {id: id}}}}) 
-
               
+              setUserStatus(true)
                 //console.log('YOU ARE LOGGED IN');
             } else {
               setSignInErr(json.message);
@@ -135,19 +124,18 @@ if (data ) {
                                  &
                         Protect your friends</p>
     
-                    <Form inputHandlers={{onSignIn ,organizationInputHandler, nameInputHandler, passwordInputHandler}} /*getStudent={getStudent}*/ schoolsData={props.data} />
+                    <Form inputHandlers={{onSignIn ,organizationInputHandler, nameInputHandler, passwordInputHandler}} schoolsData={props.data} signInErr={signInErr} />
                 </div>
                 </>
             );
         } else {
             return (
                 <>
-                <div className="application">
-                    <h1>HI IM YOUR APP</h1>
-                </div>
+                {isLoading && <p>Loading ...</p>  }
                 </>
             )
         }
 }
 
 export default graphql(getSchoolsQuery)(Login);
+*/
