@@ -1,0 +1,17 @@
+{
+  "name": "com623",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "installPackages": "cd client && npm run install && cd.. && cd server && npm run install",
+    "client": "cd client && npm run start",
+    "server": "cd server && nodemon app.js && cd..",
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"npm run server\" \"npm run client\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}

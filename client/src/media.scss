@@ -1,0 +1,46 @@
+// Breakpoints
+$desktop: 1200px;
+$tabletAndDesktop: 992px;
+$tablet: 768px;
+$mobile: 576px;
+
+////////////////////////////////////////////
+// Media queries
+// Media max-width 1200px;
+////////////////////////////////////////////
+
+@mixin lg {
+  @media (max-width: $desktop) {
+    @content;
+  }
+}
+
+////////////////////////////////////////////
+// Media max-width 992px;
+////////////////////////////////////////////
+
+@mixin md {
+  @media (max-width: $tabletAndDesktop) {
+    @content;
+  }
+}
+
+////////////////////////////////////////////
+// Media max-width 768px;
+////////////////////////////////////////////
+
+@mixin sm {
+  @media (max-width: $tablet) {
+    @content;
+  }
+}
+
+////////////////////////////////////////////
+// Media max-width 576px;
+////////////////////////////////////////////
+
+@mixin xsm {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
