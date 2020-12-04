@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ApolloClient from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
+import {BrowserRouter as Router} from 'react-router-dom'
 
 
 const client = new ApolloClient({
@@ -14,7 +15,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client} >
-    <App />
+      <Router>
+        <App />
+      </Router>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('app')

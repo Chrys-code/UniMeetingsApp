@@ -1,32 +1,26 @@
 import React from 'react';
+// Server Data
 import {graphql} from 'react-apollo';
 import {getStudentQuery} from "../../queries/loginqueries";
+// Local Data
+import UserContext from '../../userData/userData';
+
+// Higher Order Component
+// Loading UserData to React.ContextProvider
+
+// GraphQL subscription instead of a signle query would allow the app strictly updating data any time
+// Causing any consumer page to re-render during usage
 
 function Main (props) {
 
-
-    function displayUserData() {
-        const {student} = props.data
+    const { data, children } = props;
 
         return (
-            <div>
-<p>Name:{student.name}</p>
-<p>Event:{student.event}</p>
-<p>School Id:{student.school.id}</p>
-<p>School Name:{student.school.name}</p>
-
-            </div>
+            <UserContext.Provider value={{...data}}>
+                {data.loading ? <div>Loading page...</div> : children}
+            </UserContext.Provider>
         )
-
     }
-
-        return (
-            <div>
-                   {displayUserData()}
-
-            </div>
-        )
-}
 
 export default graphql(getStudentQuery, {
     options: (props)=>{
@@ -36,5 +30,7 @@ export default graphql(getStudentQuery, {
             }
         }
     }
-})(Main)
+}) (Main)
+
+
 

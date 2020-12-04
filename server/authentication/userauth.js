@@ -169,6 +169,7 @@ router.get("/account/verify", (req, res, next) => {
         });
       }
 
+      const session = sessions[0];
       if (sessions.length != 1) {
         return res.send({
           success: false,
@@ -177,6 +178,7 @@ router.get("/account/verify", (req, res, next) => {
       } else {
         return res.send({
           success: true,
+          userId: session.userId,
           message: "good",
         });
       }
