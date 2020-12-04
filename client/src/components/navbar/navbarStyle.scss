@@ -2,6 +2,7 @@
   position: fixed;
   width: 100vw;
   height: 13vh;
+  min-height: 82px;
   background: #e9e9e9;
   display: flex;
   flex-direction: row;
@@ -90,6 +91,11 @@
     transition: 0.3s ease;
     padding: 15px;
     padding-top: 50px;
+
+    p {
+      width: 80%;
+      margin: auto;
+    }
 
     ul {
       width: 60%;

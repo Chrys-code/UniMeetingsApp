@@ -8,6 +8,7 @@ import {graphql} from 'react-apollo';
 import {getSchoolsQuery} from "./queries/loginqueries";
 //Local Data
 import { getFromStorage, setInStorage } from "./utils/storage";
+
 //Components
 import Form from "./components/login/form";
 // Components HOC
@@ -35,7 +36,6 @@ function App(props) {
   const [id, setId] = useState('');
   // Page transition
   const location = useLocation();
-
   ////////////////////////////////
   // Lifecycle Methods
   ////////////////////////////////
@@ -51,9 +51,15 @@ function App(props) {
       .then((res) => res.json())
       .then((json) => {
         if (json.success) {
+          const obj = getFromStorage("login_app");
+          if (obj && obj.schoolId) {
+            const { schoolId } = obj;
+        
           setToken(token)
           setId(json.userId)
-          setIsLoading(false)
+          setIsLoading(false)  
+          setSchoolId(schoolId)
+          }
         } else {
           setIsLoading(false)
         }});
@@ -86,10 +92,11 @@ function App(props) {
         .then((json) => {
           if (json.success) {
             setId(json.id);
+            setSchoolId(json.schoolId)
             setSignInErr(json.message);
             setIsLoading(false);
             setToken(json.token);
-            setInStorage("login_app", { token: json.token });
+            setInStorage("login_app", { token: json.token, schoolId: schoolId });
           } else {
             setSignInErr(json.message);
             setIsLoading(false);
@@ -145,11 +152,11 @@ function App(props) {
 } else {
   return (
       <div className="App" >
-          <Main id={id}>
+          <Main id={id} schoolId={schoolId}>
             <Navbar />
             <AnimatePresence exitBeforeEnter >
             <Switch location={location} key={location.key}>
-              <Route path="/" exact component={(e)=><Activities variants={ variants } transition={transition}/>} />
+              <Route path="/" exact component={(e)=><Activities  variants={ variants } transition={transition}/>} />
               <Route path="/events" component={(e)=><Events variants={variants} transition={transition} />} />
               <Route path="/lists" component={(e)=><Lists variants={variants} transition={transition} /> } />
               <Route path="/meetings" component={(e)=><Meetings variants={variants} transition={transition} /> } />

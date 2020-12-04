@@ -11,6 +11,7 @@ function Activities(props) {
   const {variants, transition} = props;
   // UserData
   const userData = useContext(UserContext);
+  const user = userData.user.student;
   /////////////////////////
   // Page Content
   /////////////////////////
@@ -46,7 +47,7 @@ function Activities(props) {
     return (
         <motion.div initial="initial" animate="visible" exit="hidden" variants={variants}  transition={transition}   className="activities">
             <div className="activities_greeting">
-                <h3>Welcome, <span>{userData.student.name}</span>!</h3>
+                <h3>Welcome, <span>{user.name}</span>!</h3>
                 <p>Who you are meeting with today? {""} <br/>Please chose one from the activities below:</p>
             </div>
             <div className="activities_tlies_container">

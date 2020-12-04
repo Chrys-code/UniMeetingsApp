@@ -143,6 +143,7 @@ router.post("/account/signin", (req, res, next) => {
           message: "Valid sign in",
           token: doc._id,
           id: user._id,
+          schoolId: user.schoolId
         });
       });
     }
