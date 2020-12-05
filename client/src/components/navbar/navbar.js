@@ -15,7 +15,7 @@ function Navbar(props) {
   // Browser History for "back / logout" button
   let history = useHistory();
 
-
+  console.log(userData)
   function menuHandler() {
     setUserMenuOpen(!userMenuOpen);
   }
@@ -73,7 +73,7 @@ function Navbar(props) {
         <ul className="user_menu_list">
           <li className="user_menu_list_info">Name: {user.name}</li>
           <li className="user_menu_list_info">School: {user.school.name}</li>
-          {user.event && (<li className="user_menu_list_info">Last Event: {user.event.location}, {user.event.date}</li>)}
+          {user.event ? (<li className="user_menu_list_info">Last Event: {user.event.location}, {user.event.date}</li>) : user.userDate && (<li className="user_menu_list_info">Last Event: {user.userDate}</li>)}
         </ul>
       </div>
   </div>

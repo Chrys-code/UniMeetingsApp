@@ -10,9 +10,6 @@ import UserContext from '../../userData/userData';
 // Higher Order Component
 // Loading UserData to React.ContextProvider
 
-// GraphQL subscription instead of a signle query would allow the app strictly updating data any time
-// Causing any consumer page to re-render during usage
-
 function Main (props) {
 
     const { getStudentQuery, getSchoolOfStudentQuery, children } = props;

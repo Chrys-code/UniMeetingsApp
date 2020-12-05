@@ -22,6 +22,10 @@ const studentSchema = new Schema({
     eventId: {
       type: String,
       default: "",
+    },
+    userDate: {
+      type: String,
+      default: "",
     }
 })
 

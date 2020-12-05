@@ -24,6 +24,11 @@ function Filter(props) {
     /////////////////////////
     useEffect(() => {
 
+        //write a function that replaces user.event.date with user.userDate
+        // if user.event.date == null && user.userDate
+        // return a new list & pass as new students list instad of original students list
+
+        // Initial
         if(filter == null || filter == "all") {
             setFilterStudents(students)
             setTimeout(()=> {
@@ -32,16 +37,23 @@ function Filter(props) {
             return
         }
 
+        // User filters by status (green, orange, red)
+        // status depends on days spent since last event (in display, see render Fn)
+        // event.date - current.date = days spent since last event
+        //  x < 7 days = red 
+        //  7 < x < 14 days = orange 
+        //  14 < x days = green
+        // event.date == null = green 
         let d1 = Date.now();
         let filterMin = 0 ;
 
         // Since the function will return an interval min-max filter required
         if(filter == 7) {
             filterMin = 0
-        } else if (filter == 11) {
+        } else if (filter == 14) {
             filterMin = 7
-        } else if (filter == 14){
-            filterMin = 11
+        } else if (filter == 15){
+            filterMin = 14
         }
 
         // Get students with event dates
@@ -49,9 +61,14 @@ function Filter(props) {
 
         // Filter students with events regarding the chosen values
         let filteredStudents = studentsWithEvents.filter((x) =>  (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin) && (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) <= filter) );
+    
+        // No need of a max value to search for green status
+        if(filter == 15) {
+            filteredStudents = studentsWithEvents.filter((x) =>  Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin);
+        }
 
         //Push students with no initial event to the end of the list only if green status is chosen
-        if(filteredStudents != null && filter == 14) {
+        if(filteredStudents != null && filter == 15) {
             let studentsWithOutEvents = students.filter((x) => x.event == null);
             filteredStudents.push(...studentsWithOutEvents);
         }
@@ -70,14 +87,15 @@ function Filter(props) {
 
 
     /////////////////////////
-    // Order Students (based on filtered students)
+    // Order Students
+    // (on filteredStudens)
     /////////////////////////
     useEffect(() => {
-        // if order is not selected / initial to display students
-        setOrderedStudents(filterStudents);
 
         if(order == "name") {
             let sortedByName = filterStudents.sort((a, b) => a.name > b.name? 1:-1);
+            console.log(sortedByName)
+            //set state
             setOrderedStudents(sortedByName);
         }
 
@@ -91,7 +109,6 @@ function Filter(props) {
             let orderByStatus = studentsWithEvents.sort((a, b) => parseISO(b.event.date) - parseISO(a.event.date));
             // Push students without events
             orderByStatus.push(...studentsWithOutEvents)
-            console.log(orderByStatus)
             // Set state
             setOrderedStudents(orderByStatus);
         }
@@ -102,14 +119,14 @@ function Filter(props) {
 
     /////////////////////////
     // Render students (based on order)
-    // Assign status color by populating css
+    // Assign status colors by populating css
     /////////////////////////
 
     return (<>
     
                 {isLoading ? 
                 <div>Loading Students ...</div> 
-                :orderedStudents.map(student => {
+                :orderedStudents&&orderedStudents.map(student => {
                     let color = "red";
 
                     if(student.event) {
@@ -123,6 +140,7 @@ function Filter(props) {
                             : color='orange'
                         : color='green'    
                     } else {
+                        // for students with no event.date
                         color = 'green'
                     }
 

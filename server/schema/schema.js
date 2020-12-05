@@ -21,6 +21,7 @@ const StudentType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
+        userDate: {type: GraphQLString},
         event: {
             type: EventType,
             resolve(parent, args) {
@@ -191,6 +192,30 @@ const Mutation = new GraphQLObjectType({
                     Student.findOneAndUpdate(
                         {"_id": args.studentId},
                         {"$set": {eventId: args.eventId}},
+                        {"new": true}
+                    ).exec((err, res) => {
+                        console.log('test', res)
+                        if(err) {
+                            reject(err)
+                        } else {
+                            resolve(res)
+                        }
+                    })
+
+                })
+            }
+        },
+        addUserDate: {
+            type: StudentType,
+            args: {
+                id: {type: GraphQLID},
+                date: {type: GraphQLString},
+            },
+            resolve(parent, args) {
+                return new Promise((resolve, reject) => {
+                    Student.findOneAndUpdate(
+                        {"_id": args.id},
+                        {"$set": {userDate: args.date}},
                         {"new": true}
                     ).exec((err, res) => {
                         console.log('test', res)

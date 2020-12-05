@@ -14,7 +14,9 @@ const getSchoolsQuery = gql`
 const getStudentQuery = gql`
 query($id: ID){
     student(id: $id) {
+        id
         name
+        userDate
         event {
             location
             date

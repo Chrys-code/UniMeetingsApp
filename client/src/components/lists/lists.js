@@ -1,16 +1,22 @@
 import React, {useState, useEffect} from 'react'
 import './listsStyle.scss';
-import Filter from "./filter";
 // Local Data
 // Page Transition
 import {motion} from 'framer-motion'
+//Components
+import Filter from "./filter";
 
 
 function Lists(props) {
+    // Props
     const {variants, transition} = props;
+    // State
+    const [order, setOrder] = useState('name')
+    const [filter, setFilter] = useState('all');
 
-    const [order, setOrder] = useState(null)
-    const [filter, setFilter] = useState(null);
+    ///////////////////////////
+    // Trusted events (input)
+    //////////////////////////
 
     function sortStudents(e) {
         e.preventDefault();
@@ -22,10 +28,14 @@ function Lists(props) {
         setFilter(e.target.value);
     }
 
+    ///////////////////////////
+    // Component will unmount events
+    //////////////////////////
+
     useEffect(() => {
         return () => {
-            setOrder('')
-            setFilter(0)
+            setOrder('name')
+            setFilter('all')
         }
     }, [])
 
@@ -38,15 +48,16 @@ function Lists(props) {
                     <p>See the lists of students below:</p>
                 </div>
 
+                <p>Filter By:</p>
                 <select onChange={(e)=>filterStudents(e)}>
-                <option value="all" >Filter</option>
-                <option value="14" >Green</option>
-                <option value="11">Orange</option>
+                <option value="all" >All</option>
+                <option value="15" >Green</option>
+                <option value="14">Orange</option>
                 <option value="7">Red</option>
                 </select>
 
+                <p>Order By:</p>
                 <select onChange={(e)=>sortStudents(e)}>
-                <option >Order By</option>
                 <option value="name" >Name</option>
                 <option value="status">Last event</option>
                 </select>
