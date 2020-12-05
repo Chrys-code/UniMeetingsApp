@@ -1,4 +1,4 @@
-import { parseISO, format } from "date-fns";
+import { parseISO } from "date-fns";
 
 export default function Datefunction({ dateString }) {
   const date = parseISO(dateString);

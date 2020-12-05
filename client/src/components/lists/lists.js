@@ -1,8 +1,7 @@
-import React, {useContext}from 'react'
+import React, {useState, useEffect} from 'react'
 import './listsStyle.scss';
-import Datefunction from "../../utils/date";
+import Filter from "./filter";
 // Local Data
-import UserContext from '../../userData/userData';
 // Page Transition
 import {motion} from 'framer-motion'
 
@@ -10,8 +9,26 @@ import {motion} from 'framer-motion'
 function Lists(props) {
     const {variants, transition} = props;
 
-    const userData = useContext(UserContext);
-    const school = userData.school.school
+    const [order, setOrder] = useState(null)
+    const [filter, setFilter] = useState(null);
+
+    function sortStudents(e) {
+        e.preventDefault();
+        setOrder(e.target.value);
+    }
+
+    function filterStudents(e) {
+        e.preventDefault();
+        setFilter(e.target.value);
+    }
+
+    useEffect(() => {
+        return () => {
+            setOrder('')
+            setFilter(0)
+        }
+    }, [])
+
 
     return (
         <motion.div initial="initial" animate="visible" exit="hidden" variants={variants} transition={transition}  className="lists">
@@ -20,18 +37,23 @@ function Lists(props) {
                     <h3>Lists</h3>
                     <p>See the lists of students below:</p>
                 </div>
-                <select>
-                    <option>Order By</option>
+
+                <select onChange={(e)=>filterStudents(e)}>
+                <option value="all" >Filter</option>
+                <option value="14" >Green</option>
+                <option value="11">Orange</option>
+                <option value="7">Red</option>
+                </select>
+
+                <select onChange={(e)=>sortStudents(e)}>
+                <option >Order By</option>
+                <option value="name" >Name</option>
+                <option value="status">Last event</option>
                 </select>
 
                 <ul className="student_list">
                 <li>Student:  <span>Last event:</span></li>
-
-                    {school.students.map((student)=> {
-                        return(
-                        <li key={student.name}>{student.name}  <span>{student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>
-                        )
-                    })}
+                <Filter order={order} filter={filter} />
                 </ul>
             </div>
         </motion.div>
