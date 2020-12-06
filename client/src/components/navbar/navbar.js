@@ -4,7 +4,8 @@ import './navbarStyle.scss';
 import {useHistory} from 'react-router-dom';
 import { getFromStorage, setInStorage } from "../../utils/storage";
 import UserContext from '../../userData/userData';
-
+//Components
+import Usermenu from "./usermenu";
 function Navbar(props) {
   // User Data
   const userData = useContext(UserContext);
@@ -15,7 +16,6 @@ function Navbar(props) {
   // Browser History for "back / logout" button
   let history = useHistory();
 
-  console.log(userData)
   function menuHandler() {
     setUserMenuOpen(!userMenuOpen);
   }
@@ -50,9 +50,6 @@ function Navbar(props) {
   
   }
 
-  const userMenuStyle = {
-    transform: `translateX(${userMenuOpen? 0 : 100}%)`
-  }
 
   ////////////////////////////////
   // Render Function
@@ -67,16 +64,10 @@ function Navbar(props) {
           <img src={require('../../Assets/User/user_icon.png').default} alt="user_illustration"></img>
         </div>
       </div>
+        <Usermenu user={user} userMenuOpen={userMenuOpen} />
 
-      <div className="user_menu" style={userMenuStyle}>
-        <p>Account information:</p>{" "} <br/>
-        <ul className="user_menu_list">
-          <li className="user_menu_list_info">Name: {user.name}</li>
-          <li className="user_menu_list_info">School: {user.school.name}</li>
-          {user.event ? (<li className="user_menu_list_info">Last Event: {user.event.location}, {user.event.date}</li>) : user.userDate && (<li className="user_menu_list_info">Last Event: {user.userDate}</li>)}
-        </ul>
-      </div>
   </div>
+
 )
 }
 

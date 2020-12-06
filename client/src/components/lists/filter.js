@@ -5,7 +5,6 @@ import { parseISO } from "date-fns";
 // Local Data
 import UserContext from '../../userData/userData';
 
-
 function Filter(props) {
 
     //Props
@@ -15,8 +14,46 @@ function Filter(props) {
     const students = userData.school.school.students
     //State
     const [isLoading, setIsLoading] = useState(true);
+    //Filtering
     const [filterStudents, setFilterStudents] = useState([]);
+    const [studentsToFilter, setStudentsToFilter] = useState([]);
     const [orderedStudents, setOrderedStudents] = useState([]);
+
+
+    /////////////////////////
+    // Preparing filterable students
+    /////////////////////////
+    // Replace event.date with user
+    // given date (in events & travel page)
+    /////////////////////////
+
+    const replaceDate = () => {
+        // Get students with out event date and replace with userDate
+        let withOutDate = students.filter((x) => x.event == null);
+        withOutDate.forEach(student => {
+            const userDate = student.userDate;
+            student.event = {date: userDate, location: null}
+        })
+
+        // filter again for successful ones
+        // (Students we want to replace now)
+        let withReplacedDate = withOutDate.filter((x) => x.event.date);
+
+        // Replace the students with the students with new event.dates on matching index
+        withReplacedDate.map(student => {
+            const index = students.indexOf(student.name);
+            if(index > -1) {
+               return students[index].replace(student)
+            }
+            return students
+        })
+
+        setStudentsToFilter(students);
+    }
+
+    useEffect(()=>{
+       replaceDate()
+    }, [])
 
 
     /////////////////////////
@@ -24,13 +61,10 @@ function Filter(props) {
     /////////////////////////
     useEffect(() => {
 
-        //write a function that replaces user.event.date with user.userDate
-        // if user.event.date == null && user.userDate
-        // return a new list & pass as new students list instad of original students list
 
         // Initial
-        if(filter == null || filter == "all") {
-            setFilterStudents(students)
+        if(filter == null || filter === "all") {
+            setFilterStudents(studentsToFilter)
             setTimeout(()=> {
                 setIsLoading(false);
             }, 500)
@@ -44,37 +78,40 @@ function Filter(props) {
         //  7 < x < 14 days = orange 
         //  14 < x days = green
         // event.date == null = green 
+
         let d1 = Date.now();
         let filterMin = 0 ;
 
         // Since the function will return an interval min-max filter required
-        if(filter == 7) {
+        if(filter === '7') {
             filterMin = 0
-        } else if (filter == 14) {
+        } else if (filter === '14') {
             filterMin = 7
-        } else if (filter == 15){
+        } else if (filter === '15'){
             filterMin = 14
         }
 
-        // Get students with event dates
-        let studentsWithEvents = students.filter((x) => x.event);
+        //Get all students with date
+        let studentsWithdate = studentsToFilter.filter(x=> x.event != null)
 
         // Filter students with events regarding the chosen values
-        let filteredStudents = studentsWithEvents.filter((x) =>  (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin) && (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) <= filter) );
+        let filteredStudents = studentsWithdate.filter((x) =>  (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin) && (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) <= filter) );
     
         // No need of a max value to search for green status
-        if(filter == 15) {
-            filteredStudents = studentsWithEvents.filter((x) =>  Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin);
+        if(filter === '15') {
+            filteredStudents = studentsWithdate.filter((x) =>  Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin);
         }
 
-        //Push students with no initial event to the end of the list only if green status is chosen
-        if(filteredStudents != null && filter == 15) {
-            let studentsWithOutEvents = students.filter((x) => x.event == null);
-            filteredStudents.push(...studentsWithOutEvents);
+        //Push students with no initial date to the end of the list only if green status is chosen
+        if(filteredStudents != null && filter === 15) {
+
+        // Students still without any event date 
+        let studentsWithOutDate = studentsToFilter.filter(x=> x.event == null)
+            filteredStudents.push(studentsWithOutDate);
         }
 
         // Set results
-        setFilterStudents(filteredStudents);
+        setFilterStudents(filteredStudents);    
         setTimeout(()=> {
             setIsLoading(false);
         }, 500)
@@ -83,7 +120,8 @@ function Filter(props) {
         return () => {
             setFilterStudents([])
         }
-    }, [filter, students])
+        
+    }, [filter, studentsToFilter])
 
 
     /////////////////////////
@@ -92,15 +130,14 @@ function Filter(props) {
     /////////////////////////
     useEffect(() => {
 
-        if(order == "name") {
+        if(order === "name") {
             let sortedByName = filterStudents.sort((a, b) => a.name > b.name? 1:-1);
-            console.log(sortedByName)
             //set state
             setOrderedStudents(sortedByName);
         }
 
         // Remember filtering for green status will push those of event=null students as well
-        if(order == "status") {
+        if(order === "status") {
             // with events
             let studentsWithEvents = filterStudents.filter((x) => x.event);
             // without events
@@ -144,7 +181,7 @@ function Filter(props) {
                         color = 'green'
                     }
 
-                    return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>
+                    return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{(student.event == null || student.event === "") ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>
                 })}
 
        </>)

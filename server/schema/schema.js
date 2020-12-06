@@ -194,7 +194,6 @@ const Mutation = new GraphQLObjectType({
                         {"$set": {eventId: args.eventId}},
                         {"new": true}
                     ).exec((err, res) => {
-                        console.log('test', res)
                         if(err) {
                             reject(err)
                         } else {
@@ -218,7 +217,6 @@ const Mutation = new GraphQLObjectType({
                         {"$set": {userDate: args.date}},
                         {"new": true}
                     ).exec((err, res) => {
-                        console.log('test', res)
                         if(err) {
                             reject(err)
                         } else {

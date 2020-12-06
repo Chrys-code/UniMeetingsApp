@@ -11,21 +11,7 @@ export default function Datefunction({ dateString }) {
     let daysDiff = Math.floor( hours / 24 );
 
     function hoursDiff(d1, d2) {
-        let minutes = minutesDiff(d1, d2);
-        let hoursDiff = Math.floor( minutes / 60 );
-
-        function minutesDiff(d1, d2) {
-            let seconds = secondsDiff(d1, d2);
-            let minutesDiff = Math.floor( seconds / 60 );
-
-            function secondsDiff(d1, d2) {
-                let millisecondDiff = d2 - d1;
-                let secDiff = Math.floor( ( d2 - d1) / 1000 );
-
-                return secDiff;
-             }
-            return minutesDiff;
-       }
+        let hoursDiff = Math.floor(d2-d1) /1000/60/60 ;
         return hoursDiff;
      }
     return daysDiff;

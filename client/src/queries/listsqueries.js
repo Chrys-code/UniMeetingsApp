@@ -6,6 +6,7 @@ query($id: ID){
             name
             students {
                 name
+                userDate
               event {
                 date
               }
