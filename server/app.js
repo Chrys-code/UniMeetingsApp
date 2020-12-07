@@ -4,11 +4,12 @@ const schema = require('./schema/schema');
 const app = express();
 const mongoose = require('mongoose');
 const userAuth = require("./authentication/userauth.js");
+const addEvent = require("./userEvents/addEvent.js");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require("dotenv/config");
 
-
+const PORT = process.env.PORT || 8080 ;
 mongoose.connect(process.env.DB_CONN, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,12 +29,12 @@ app.use(cors());
 // Routes
 //////////////////////
 app.use("/api", userAuth);
-
+app.use("/userevent", addEvent);
 app.use('/graphql', graphqlHTTP({
     schema: schema,
-    graphiql: true,
+    graphiql: false,
 }))
 
-app.listen(8080, ()=> {
-    console.log('server run at port:8080')
+app.listen(PORT, ()=> {
+    console.log(`server run at port:${PORT}`)
 })

@@ -10,7 +10,6 @@ function Navbar(props) {
   // User Data
   const userData = useContext(UserContext);
   const user = userData.user.student;
-
   // State
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   // Browser History for "back / logout" button

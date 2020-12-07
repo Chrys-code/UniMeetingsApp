@@ -3,7 +3,9 @@
 //////////////////////
 // Should be external css component
 //////////////////////
-
+:root {
+  --color: orange;
+}
 .meetings {
   position: absolute;
   width: 100vw;
@@ -185,7 +187,7 @@
             &:before {
               content: "•";
               padding-right: 0px;
-              color: orange;
+              color: var(--color);
             }
 
             p {

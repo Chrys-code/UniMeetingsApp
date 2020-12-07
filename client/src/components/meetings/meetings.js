@@ -1,10 +1,175 @@
-import React from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import './meetingsStyle.scss';
+import { parseISO } from "date-fns";
+import Datefunction from "../../utils/date";
+// Page Transition
 import {motion} from 'framer-motion'
+// Local
+import UserContext from '../../userData/userData';
 
 function Meetings(props) {
 
-    const {variants, transition} = props;
+        const {variants, transition} = props;
+        // State
+        const [year, setYear] = useState('2020');      // format yyyy-mm-dd
+        const [day, setDays] = useState('01');
+        const [month, setMonth] = useState('01');
+        const [place, setPlace] = useState('');
+
+        // Display Purposes
+        const [searchList, setSearchList] = useState([]); // initial list
+        const [listOfStudents, setListOfStudents] = useState([]); // what user see when they are searching
+        const [invitedStudents, setInvitedStudents] = useState([]); // what users added to event participants
+        // Server - Data purposes
+        const [studentId, setStudentId] = useState(''); // event creator id
+        const [invitedStudentsId, setInvitedStudentsId] = useState([]);  // participants id array
+        // Loading handler
+        const [isLoading, setLoading] = useState(false);
+        //Local Data for mutation
+        const userData = useContext(UserContext);
+        const students = userData.school.school.students
+        const id = userData.user.student.id
+
+        //////////////////////////
+        // Page content 
+        // format yyyy-mm-dd
+        //////////////////////////
+        const days = ['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
+        const months = ['01','02','03','04','05','06','07','08','09','10','11','12']
+        const years = ['2020','2021']
+    
+
+        //////////////////////////
+        // initialize state with userContext
+        //////////////////////////
+        useEffect(() => {
+                setStudentId(id)
+        }, [id])
+
+        // Remove current user from list
+        useEffect(() => {
+                let withoutUser = students.filter((x)=> x.id !== studentId)
+                setSearchList(withoutUser)
+        }, [students, studentId])
+
+
+
+        //////////////////////////
+        // Send data to the server on event creation
+        //////////////////////////
+
+        async function onCreateEvent() {
+            setLoading(true)
+             await fetch("/userevent/createEvent", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                creator: studentId,
+                location: place,
+                date: `${year}-${month}-${day}`,
+                students: invitedStudentsId,
+             }),
+            })
+              .then((res) => res.json())
+              .then((json) => {
+                  console.log(json)
+                if (json.success) {
+                  setLoading(false);
+                } else {
+                  setLoading(false);
+                }  
+              });
+          }
+      
+
+
+    //////////////////////////
+    // Trusted events (input)
+    //////////////////////////
+
+    function yearInputHandler(e) {
+        setYear(e.target.value);
+    }
+
+    function monthInputHandler(e) {
+        setMonth(e.target.value);
+    }
+
+    function dayInputHandler(e) {
+        setDays(e.target.value);
+    }
+
+    function placeInputHandler(e) {
+        setPlace(e.target.value);
+    }
+
+    function searchStudentHandler(e) {
+            if(e.target.value === "" || e.target.value == null) {
+                setListOfStudents([]);
+            } else {
+                let list =  searchList.filter((x)=> x.name.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1 )
+                setListOfStudents(list);
+       
+            }
+    }
+
+    function addStudent(e, student) {
+        e.preventDefault();
+
+        // prevent student being added twice to the invite list
+        const index = invitedStudents.indexOf(student);
+        if(index > -1) {
+                return
+        } else {
+                // set ids for data exchange with server
+                setInvitedStudentsId(student.id)
+                // Add students to list
+                invitedStudents.push(student)
+                setInvitedStudents(invitedStudents)
+                // Once student is added it should be removed from search list and
+                // from listed students
+                var indexOfStudent = invitedStudents.indexOf(student);
+                var restOfStudents = listOfStudents.splice(indexOfStudent, 0)
+                setListOfStudents(restOfStudents);
+                setSearchList(searchList.splice(indexOfStudent, 0))
+                // This requires student being added again after removeing from invite list 
+        }
+
+    }
+
+    function removeStudent(e, student) {
+        e.preventDefault();
+
+
+        // remove ids for data exchange with server
+        const idIndex = invitedStudentsId.indexOf(student.id)
+        const remainingStudentIds = invitedStudentsId.splice(idIndex, 0);
+        setInvitedStudentsId(remainingStudentIds)
+
+        // Remove from lists
+        const index = invitedStudents.indexOf(student)
+        const studentsWithoutRemoved = invitedStudents.splice(index, 0)
+        setInvitedStudents(studentsWithoutRemoved)
+
+        // Add back to searchlist once student is removed from invite list
+        searchList.push(student)
+        setSearchList(searchList)
+    }           
+
+
+    function formHandler(e) {
+        setLoading(true);
+        e.preventDefault();
+        onCreateEvent();
+
+        console.log(invitedStudentsId)
+        console.log(`${year}-${month}-${day}`)
+        console.log(studentId)
+        console.log(place)
+    }
+
 
     return (
         <motion.div initial="initial" animate="visible" exit="hidden" variants={variants} transition={transition} className="meetings" >
@@ -13,73 +178,102 @@ function Meetings(props) {
                     <h3>Lists</h3>
                     <p>See the lists of students below:</p>
                 </div>
-                <form>
 
-                <div className="meetings_details">
-                    <p>Provide date & location</p>
-                        <span>Day:</span>{" "}<br/>
-                        <select>
-                                <option>2020</option> 
-                        </select> {" "}<br/>
+             <form onSubmit={(e)=>formHandler(e)}>
+             <div className="meetings_details">
+                <p>Provide date & location</p>
+                <span>Year:</span>{" "}<br/>
+                    <select onChange={(e)=>yearInputHandler(e)}>
+                    {years.map(year=>{ return(
+                            <option key={year} value={year}>{year}</option>
+                        )})}
+                    </select> {" "}<br/>
 
-                        <span>Month:</span>{" "}<br/>
-                        <select> 
-                                <option>1</option>
-                        </select>{" "}<br/> 
+                    <span>Month:</span>{" "}<br/>
+                    <select onChange={(e)=>monthInputHandler(e)}> 
+                        {months.map(month=>{ return(
+                            <option key={month} value={month}>{month}</option>
+                        )})}
+                    </select>{" "}<br/> 
 
-                        <span>Year:</span>{" "}<br/>
-                        <select>
-                                <option>2020</option>
-                        </select>{" "}<br/>
-
-                        <p>Provide address or place name</p>
-
-                        <div className="field">
-                                <div className="field_icon">
-                                        <img src={require('../../Assets/Login/lockmail.png').default} alt="" />
-                                </div>
-                                <input name="place" type="text" placeholder="Address or place name" />
-                        </div>
+                    <span>Day:</span>{" "}<br/>
+                    <select onChange={(e)=>dayInputHandler(e)}>
+                        {days.map(day=>{ return(
+                            <option key={day} value={day}>{day}</option>
+                        )})}
+                    </select>{" "}<br/>
+                <p>Provide address or place name</p>
+                <div className="field">
+                   <div className="field_icon">
+                        <img src={require('../../Assets/Login/lockmail.png').default} alt="" />
+                   </div>
+                   <input name="place" type="text" placeholder="Address or place name" onChange={(e)=>placeInputHandler(e)} />
                 </div>
+             </div>
 
 
                 <div className="participant_list">
-                <p>Student:<span>Last event:</span></p> 
+                   <p>Student:<span>Last event:</span></p> 
+                   <ul>
+                        {invitedStudents && invitedStudents.map(student =>{
 
-                        <ul>
+                                 let color;
+                             
+                                 let d1 = Date.now();
+                                 let d2 ;
+                                 student.event == null ? d2 = parseISO(student.userDate) : d2 = parseISO(student.event.date)
+                                 let daysDiff = Math.floor(((((d1 - d2)/1000)/60)/60)/24);
+                        
+                                 daysDiff < 14
+                                 ? daysDiff < 7 
+                                     ? color='red'
+                                     : color='orange'
+                                 : color='green'    
 
-                        <li><p>Example Student</p><span>3 days ago</span>
-                        <button className="remove-btn"> - </button>
-                        </li>
-
-                        <li><p>Example Student</p><span>3 days ago</span>
-                        <button className="remove-btn"> - </button>
-                        </li>
-                        </ul>
+                                return(
+                                        <li style={{"--color": color}} key={student.name}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
+                                        <button className="remove-btn" onClick={(e)=>removeStudent(e, student)} > - </button>
+                                     </li>
+                                )
+                        })}
+                   </ul>
                 </div>
 
                 <div className="search_students participant_list">
-                <div className="field">
-                        <div className="field_icon">
-                                <img src={require('../../Assets/Meetings/students.png').default} alt="" />
-                        </div>
-                        <input type="text" name="student" placeholder="Search for student..." />
+                   <div className="field">
+                      <div className="field_icon">
+                         <img src={require('../../Assets/Meetings/students.png').default} alt="" />
+                      </div>
+                      <input type="text" name="student" placeholder="Search for student..." onChange={(e)=>searchStudentHandler(e)} />
+                   </div>
+
+                   <ul>
+                           {listOfStudents.map(student => {
+                                   console.log(student)
+                                    let color;
+                             
+                                        let d1 = Date.now();
+                                        let d2 ;
+                                        student.event == null ? d2 = parseISO(student.userDate) : d2 = parseISO(student.event.date)
+                                        let daysDiff = Math.floor(((((d1 - d2)/1000)/60)/60)/24);
+                         
+                                        daysDiff < 14
+                                        ? daysDiff < 7 
+                                            ? color='red'
+                                            : color='orange'
+                                        : color='green'    
+                                     
+                                return (
+                                    <li style={{"--color": color}} key={student.name}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
+                                        <button  className="add-btn" style={{color: '#6BA46A', boxShadow: '4px 2px 10px #6BA46A'}} onClick={(e)=>addStudent(e, student)}> + </button>
+                                    </li>              
+                                )
+                           })}
+                   </ul>
                 </div>
-                <ul>
 
-                <li><p>Example Student</p><span>3 days ago</span>
-                <button className="add-btn" style={{color: '#6BA46A', boxShadow: '4px 2px 10px #6BA46A'}}> + </button>
-                </li>
-
-                <li><p>Example Student</p><span>3 days ago</span>
-                <button className="add-btn" style={{color: '#6BA46A', boxShadow: '4px 2px 10px #6BA46A'}}> + </button>
-                </li>
-                </ul>
-                </div>
-
-                <button type="submit">Send</button>
+                   {isLoading ? <div>Loading ...</div> : <button type="submit">Send</button>}
                 </form>
-
             </div>
         </motion.div>
 

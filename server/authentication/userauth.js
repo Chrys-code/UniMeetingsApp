@@ -1,5 +1,4 @@
 const express = require("express");
-const school = require("../models/school");
 const router = express.Router();
 const User = require("../models/student");
 const UserSession = require('../models/usersession');
@@ -47,7 +46,7 @@ router.post("/account/signup", (req, res, next) => {
       } else if (previousUsers.length > 0) {
         return res.send({
           success: false,
-          message: "Error: User credentials are already in use",
+          message: "Error: Username are already in use",
         });
       }
 

@@ -1,7 +1,10 @@
 
 import {gql} from 'apollo-boost';
 
+// Kickstart data about user and their school for the application
+// Mutationqueries are placed within the app
 
+// Login: load schools to chose
 const getSchoolsQuery = gql`
  {
     schools {
@@ -10,7 +13,7 @@ const getSchoolsQuery = gql`
     }
 }
 `
-
+// Upon login: Load student and their school
 const getStudentQuery = gql`
 query($id: ID){
     student(id: $id) {
@@ -29,4 +32,21 @@ query($id: ID){
 }
 `
 
-export {getSchoolsQuery, getStudentQuery};
+// Based on student id, get school and students within school
+const getSchoolOfStudentQuery = gql`
+query($id: ID){
+    school(id: $id) {
+            name
+            students {
+                id
+                name
+                userDate
+              event {
+                date
+              }
+            }
+    }
+}
+`
+
+export {getSchoolsQuery, getStudentQuery, getSchoolOfStudentQuery};

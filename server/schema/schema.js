@@ -4,12 +4,16 @@ const Student = require('../models/student');
 const School = require('../models/school');
 const Event = require('../models/event');
 
+
+
 const {GraphQLObjectType,
+    GraphQLInputObjectType,
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
     GraphQLInt,
     GraphQLList
+    
 } = graphql;
 
 ///////////////////////
@@ -38,7 +42,7 @@ const StudentType = new GraphQLObjectType({
                 return School.findById(parent.schoolId)
 
             },
-        }
+        },
     })
 })
 
@@ -62,14 +66,16 @@ const EventType = new GraphQLObjectType({
     name: 'Event',
     fields: () => ({
         id: {type:GraphQLID},
+        creator: {type: GraphQLID},
         location: {type: GraphQLString},
         date: {type: GraphQLString},
+        participant: {type: GraphQLString},
         students: {
             type: new GraphQLList(StudentType),
             resolve(parent, args) {
                 return Student.find({eventId: parent.id})
             }
-        }
+        },
     })
 })
 
@@ -165,22 +171,6 @@ const Mutation = new GraphQLObjectType({
                 return school.save();
             }
         },
-        addEvent: {
-            type: EventType,
-            args: {
-                    location: {type: GraphQLString},
-                    date: {type: GraphQLString},
-                    students: {type: GraphQLID},  
-            },
-            resolve(parent, args) {
-                let event = new Event({
-                    location: args.location,
-                    date: args.date,
-                    students: args.students,
-                });
-                return event.save();
-            }
-        },
         updateStudent: {
             type: StudentType,
             args: {
@@ -226,11 +216,14 @@ const Mutation = new GraphQLObjectType({
 
                 })
             }
-        }
+        },
     }
 })
 
+
+
+
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation
+    mutation: Mutation,
 })

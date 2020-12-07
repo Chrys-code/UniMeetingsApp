@@ -163,7 +163,7 @@ function Filter(props) {
     
                 {isLoading ? 
                 <div>Loading Students ...</div> 
-                :orderedStudents&&orderedStudents.map(student => {
+                : orderedStudents && orderedStudents.map(student => {
                     let color = "red";
 
                     if(student.event) {
@@ -181,7 +181,7 @@ function Filter(props) {
                         color = 'green'
                     }
 
-                    return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{(student.event == null || student.event === "") ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>
+                    return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{student.event.date === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>
                 })}
 
        </>)

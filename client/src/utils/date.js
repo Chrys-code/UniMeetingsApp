@@ -17,6 +17,5 @@ export default function Datefunction({ dateString }) {
     return daysDiff;
  }
 
-
-  return <time dateTime={dateString}>{daysDiff(date, d1) + " days ago"}</time>;
+ return <time dateTime={dateString}>{daysDiff(date, d1) + " days ago"}</time>
 }

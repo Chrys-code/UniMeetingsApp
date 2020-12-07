@@ -7,7 +7,6 @@ export function Form(props) {
 
     function displaySchools() {
         var data = schoolsData;
-
         if(data.loading) {
             return (<option > Loading Options ...</option>)
         } else {
@@ -17,6 +16,7 @@ export function Form(props) {
                 )
             })
         }
+        
     }
 
 
@@ -56,3 +56,5 @@ export function Form(props) {
 }
 
 export default Form
+
+

@@ -1,14 +1,13 @@
 import React from 'react';
 // Server Data
 import {graphql} from 'react-apollo';
-import {getStudentQuery} from "../../queries/loginqueries";
-import {getSchoolOfStudentQuery} from "../../queries/listsqueries";
+import {getStudentQuery, getSchoolOfStudentQuery} from "../../queries/loginqueries";
 import {flowRight as compose} from 'lodash';
 // Local Data
 import UserContext from '../../userData/userData';
 
-// Higher Order Component
-// Loading UserData to React.ContextProvider
+// Higher Order Component React.Context API
+// Loading UserData to React.ContextProvider before seeing the app
 
 function Main (props) {
 

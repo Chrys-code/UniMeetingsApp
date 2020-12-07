@@ -26,7 +26,7 @@ const studentSchema = new Schema({
     userDate: {
       type: String,
       default: "",
-    }
+    },
 })
 
 studentSchema.methods.generateHash = function (password) {
