@@ -12,6 +12,10 @@ import UserContext from '../../userData/userData';
 function Main (props) {
 
     const { getStudentQuery, getSchoolOfStudentQuery, children } = props;
+    if(getStudentQuery) {console.log(getStudentQuery)}
+    if(getSchoolOfStudentQuery) {console.log(getSchoolOfStudentQuery)}
+
+
 
         return (
             <UserContext.Provider value={{ user: getStudentQuery, school: getSchoolOfStudentQuery}}>

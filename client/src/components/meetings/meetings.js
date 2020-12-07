@@ -11,7 +11,7 @@ function Meetings(props) {
 
         const {variants, transition} = props;
         // State
-        const [year, setYear] = useState('2020');      // format yyyy-mm-dd
+        const [year, setYear] = useState('2020'); // format yyyy-mm-dd
         const [day, setDays] = useState('01');
         const [month, setMonth] = useState('01');
         const [place, setPlace] = useState('');
@@ -29,7 +29,9 @@ function Meetings(props) {
         const userData = useContext(UserContext);
         const students = userData.school.school.students
         const id = userData.user.student.id
+        const name = userData.user.student.name;
 
+        
         //////////////////////////
         // Page content 
         // format yyyy-mm-dd
@@ -44,7 +46,9 @@ function Meetings(props) {
         //////////////////////////
         useEffect(() => {
                 setStudentId(id)
-        }, [id])
+                invitedStudentsId.push({_id: id, name: name, accepted: true})
+                setInvitedStudentsId(invitedStudentsId)
+        }, [id, name])
 
         // Remove current user from list
         useEffect(() => {
@@ -74,7 +78,6 @@ function Meetings(props) {
             })
               .then((res) => res.json())
               .then((json) => {
-                  console.log(json)
                 if (json.success) {
                   setLoading(false);
                 } else {
@@ -124,7 +127,8 @@ function Meetings(props) {
                 return
         } else {
                 // set ids for data exchange with server
-                setInvitedStudentsId(student.id)
+                invitedStudentsId.push({_id: student.id, name: student.name})
+                setInvitedStudentsId(invitedStudentsId)
                 // Add students to list
                 invitedStudents.push(student)
                 setInvitedStudents(invitedStudents)
@@ -144,7 +148,7 @@ function Meetings(props) {
 
 
         // remove ids for data exchange with server
-        const idIndex = invitedStudentsId.indexOf(student.id)
+        const idIndex = invitedStudentsId.indexOf({_id: student.id, name: student.name})
         const remainingStudentIds = invitedStudentsId.splice(idIndex, 0);
         setInvitedStudentsId(remainingStudentIds)
 
@@ -160,14 +164,25 @@ function Meetings(props) {
 
 
     function formHandler(e) {
-        setLoading(true);
         e.preventDefault();
-        onCreateEvent();
 
-        console.log(invitedStudentsId)
-        console.log(`${year}-${month}-${day}`)
-        console.log(studentId)
-        console.log(place)
+        if(invitedStudentsId.length === 1) {
+            return
+        } else {
+            //fire event
+            setLoading(true);
+            onCreateEvent();
+
+            //cleanup (non visual data)
+            // back to single student (creator)
+            invitedStudentsId.filter((x) => x._id === studentId);
+            setInvitedStudentsId(invitedStudentsId)
+            // reset listing
+            setListOfStudents([])
+            setInvitedStudents([])
+        }
+
+
     }
 
 
@@ -249,7 +264,6 @@ function Meetings(props) {
 
                    <ul>
                            {listOfStudents.map(student => {
-                                   console.log(student)
                                     let color;
                              
                                         let d1 = Date.now();

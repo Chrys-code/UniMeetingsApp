@@ -69,7 +69,6 @@ const EventType = new GraphQLObjectType({
         creator: {type: GraphQLID},
         location: {type: GraphQLString},
         date: {type: GraphQLString},
-        participant: {type: GraphQLString},
         students: {
             type: new GraphQLList(StudentType),
             resolve(parent, args) {

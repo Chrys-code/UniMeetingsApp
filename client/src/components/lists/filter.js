@@ -11,7 +11,7 @@ function Filter(props) {
     const {order, filter} = props;
     //Local Data
     const userData = useContext(UserContext);
-    const students = userData.school.school.students
+    const [students, setStudents] = useState([]);
     //State
     const [isLoading, setIsLoading] = useState(true);
     //Filtering
@@ -19,6 +19,12 @@ function Filter(props) {
     const [studentsToFilter, setStudentsToFilter] = useState([]);
     const [orderedStudents, setOrderedStudents] = useState([]);
 
+
+    useEffect(()=>{
+        //const studentsLocal = userData.school.school.students
+       //setStudents(studentsLocal)
+       console.log(userData.school)
+    },[userData])
 
     /////////////////////////
     // Preparing filterable students
@@ -160,7 +166,7 @@ function Filter(props) {
     /////////////////////////
 
     return (<>
-    
+
                 {isLoading ? 
                 <div>Loading Students ...</div> 
                 : orderedStudents && orderedStudents.map(student => {

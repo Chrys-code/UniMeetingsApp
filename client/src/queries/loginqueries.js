@@ -21,6 +21,7 @@ query($id: ID){
         name
         userDate
         event {
+            id
             location
             date
         }
@@ -36,6 +37,7 @@ query($id: ID){
 const getSchoolOfStudentQuery = gql`
 query($id: ID){
     school(id: $id) {
+            id
             name
             students {
                 id

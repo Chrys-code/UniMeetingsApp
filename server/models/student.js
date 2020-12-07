@@ -23,6 +23,10 @@ const studentSchema = new Schema({
       type: String,
       default: "",
     },
+    upcomingEvent: {
+      type: {id: String, state: String},
+      default: {id: '', state: 'pending'}
+    },
     userDate: {
       type: String,
       default: "",
