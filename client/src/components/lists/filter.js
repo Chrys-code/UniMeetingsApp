@@ -23,7 +23,6 @@ function Filter(props) {
     useEffect(()=>{
         const studentsLocal = userData.school.school.students
        setStudents(studentsLocal)
-       console.log(studentsLocal)
     },[userData])
 
     /////////////////////////
@@ -57,7 +56,6 @@ function Filter(props) {
             })
     
             setStudentsToFilter(students);
-            console.log(students)
         }
     
        replaceDate();
@@ -101,30 +99,23 @@ function Filter(props) {
 
         //Get all students with date
         let studentsWithdate = studentsToFilter.filter(x=> x.event != null)
-
         // Filter students with events regarding the chosen values
         let filteredStudents = studentsWithdate.filter((x) =>  (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin) && (Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) <= filter) );
-    
         // No need of a max value to search for green status
         if(filter === '15') {
             filteredStudents = studentsWithdate.filter((x) =>  Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin);
         }
-
         //Push students with no initial date to the end of the list only if red status is chosen
         if(filteredStudents != null && filter === '7') {
-
         // Students still without any event date 
-        let studentsWithOutDate = studentsToFilter.filter(x=> x.event == null)
-            filteredStudents.push(studentsWithOutDate);
-            console.log(studentsWithOutDate)
-
+        let studentsWithOutDate = studentsToFilter.filter(x=> x.event == null || x.event.date === "")
+            filteredStudents.push(...studentsWithOutDate);
         }
         // Set results
         setFilterStudents(filteredStudents);    
         setTimeout(()=> {
             setIsLoading(false);
         }, 500)
-
         // Delete filtering uponleaving the page
         return () => {
             setFilterStudents([])

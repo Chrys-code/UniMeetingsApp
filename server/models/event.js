@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
     creator: {
-        type:String,
-        default: ""
+        _id: {type:String},
+        name: {type:String}        
     },
     location: {
         type: String,

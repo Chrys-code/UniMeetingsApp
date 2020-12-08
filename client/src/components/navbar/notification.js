@@ -1,27 +1,12 @@
-/*
-
 import React, {useState, useContext, useEffect} from 'react';
 // Local Data
 import UserContext from '../../userData/userData';
 // Verify User: Token
-import { getFromStorage, setInStorage } from "../../utils/storage";
-
-
-// Concept:  Fetch server time-to-time
-// By userID fetch userdata.event.ID
-// then fetch events and (oserver)findby Event.students.id
-// If found event.id != user.event id push notification to the app waiting for accept / decline
-// accept will do nothing
-// decline will remove you from event.students list
-// getting out of time will remove you as well
-// on event day, update event.studens in their students.event
-
-// mutations: expressJS  -server
-
+import { getFromStorage} from "../../utils/storage";
 
 
 function Notification(props) {
-
+  const {userMenuOpen} = props
     //state
     const [userId, setUserId] = useState('');
     const [eventId, setEventId] = useState('');
@@ -30,7 +15,6 @@ function Notification(props) {
     const userData = useContext(UserContext);
     //notification details
     const [notificationDetails, setNotificationDetails] = useState([]);
-
 
     // initialize user data
     useEffect(() => {
@@ -41,15 +25,15 @@ function Notification(props) {
       if(student.event != null && student.event.id != null){
         const userEventId = student.event.id;
         setEventId(userEventId);
-        console.log(student.event)
       }
 
     }, [userData])
 
     useEffect(()=> {
-      fecthUserUpcomingEvent();
-    }, [eventId,userId])
-
+      if(userMenuOpen == true) {
+        fecthUserUpcomingEvent();
+      }
+    }, [eventId,userId, userMenuOpen])
 
     async function fecthUserUpcomingEvent() {
             setLoading(true);
@@ -57,7 +41,6 @@ function Notification(props) {
             const obj = getFromStorage("login_app");
             if (obj && obj.token) {
               const { token } = obj;
-              console.log(token,eventId,userId)
 
             await fetch("/userevent/getupcomingevents", {
                 method: "POST",
@@ -73,21 +56,24 @@ function Notification(props) {
             })
               .then((res) => res.json())
               .then((json) => {
-                console.log(json)
                 if (json.success) {
-
                   json.events.forEach(e => {
+
                     let students = [];
 
                     e.students.forEach(student => {
                       students.push(student)
                     })
 
-                    notificationDetails.push({_id:e._id, creator: e.creator, location: e.location, date: e.date, students: students })
-                    setNotificationDetails(notificationDetails)
-
+                    const exist = notificationDetails.filter((x) => x._id === e._id)
+                    if (exist.length >= 1) {
+                      return
+                    } else {
+                      notificationDetails.push({_id:e._id, creator: {_id: e.creator._id, name: e.creator.name}, location: e.location, date: e.date, students: students })
+                      setNotificationDetails(notificationDetails);
+                    }
+                    setLoading(false);  
                   })
-
                   setLoading(false)
                 } else {
                   setLoading(false)
@@ -99,14 +85,13 @@ function Notification(props) {
     }
 
 
-
-
-    return (
+    return (<>
+    {loading ? <div>Loading events ...</div>: 
         <div className="notifications">
            {notificationDetails && notificationDetails.map(notification => {
              return (
                <div className="notification_tile" key={notification._id}>
-                 <h4>Invited By: {notification.creator}</h4>
+                 <h4>Invited By: {notification.creator.name}</h4>
                  <div className="notification_body">
                  <p>Location:{notification.location}</p>
                  <p>date:{notification.date}</p>
@@ -119,9 +104,8 @@ function Notification(props) {
                </div>
              )
            })}
-        </div>
-    )
+        </div>}
+    </>)
 }
 
 export default Notification
-*/

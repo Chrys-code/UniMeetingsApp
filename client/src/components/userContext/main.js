@@ -1,7 +1,8 @@
 import React from 'react';
 // Server Data
 import {graphql} from 'react-apollo';
-import {getStudentQuery, getSchoolOfStudentQuery} from "../../queries/loginqueries";
+import {getStudentQuery} from "../../queries/loginqueries";
+import {getSchoolOfStudentQuery} from "../../queries/listsquery";
 import {flowRight as compose} from 'lodash';
 // Local Data
 import UserContext from '../../userData/userData';
@@ -12,12 +13,8 @@ import UserContext from '../../userData/userData';
 function Main (props) {
 
     const { getStudentQuery, getSchoolOfStudentQuery, children } = props;
-    if(getStudentQuery) {console.log(getStudentQuery)}
-    if(getSchoolOfStudentQuery) {console.log(getSchoolOfStudentQuery)}
 
-
-
-        return (
+    return (
             <UserContext.Provider value={{ user: getStudentQuery, school: getSchoolOfStudentQuery}}>
                 {getStudentQuery.loading || getSchoolOfStudentQuery.loading ? <div>Loading page...</div> : children}
             </UserContext.Provider>

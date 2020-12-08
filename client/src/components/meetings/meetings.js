@@ -21,7 +21,7 @@ function Meetings(props) {
         const [listOfStudents, setListOfStudents] = useState([]); // what user see when they are searching
         const [invitedStudents, setInvitedStudents] = useState([]); // what users added to event participants
         // Server - Data purposes
-        const [studentId, setStudentId] = useState(''); // event creator id
+        const [creatorStudent, setCreatorStudent] = useState({}); // event creator id
         const [invitedStudentsId, setInvitedStudentsId] = useState([]);  // participants id array
         // Loading handler
         const [isLoading, setLoading] = useState(false);
@@ -45,16 +45,16 @@ function Meetings(props) {
         // initialize state with userContext
         //////////////////////////
         useEffect(() => {
-                setStudentId(id)
+                setCreatorStudent({_id: id, name: name})
                 invitedStudentsId.push({_id: id, name: name, accepted: true})
                 setInvitedStudentsId(invitedStudentsId)
         }, [id, name])
 
         // Remove current user from list
         useEffect(() => {
-                let withoutUser = students.filter((x)=> x.id !== studentId)
+                let withoutUser = students.filter((x)=> x.id !== creatorStudent._id)
                 setSearchList(withoutUser)
-        }, [students, studentId])
+        }, [students, creatorStudent])
 
 
 
@@ -70,7 +70,7 @@ function Meetings(props) {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                creator: studentId,
+                creator: creatorStudent,
                 location: place,
                 date: `${year}-${month}-${day}`,
                 students: invitedStudentsId,
@@ -175,7 +175,7 @@ function Meetings(props) {
 
             //cleanup (non visual data)
             // back to single student (creator)
-            invitedStudentsId.filter((x) => x._id === studentId);
+            invitedStudentsId.filter((x) => x._id === creatorStudent._id);
             setInvitedStudentsId(invitedStudentsId)
             // reset listing
             setListOfStudents([])

@@ -1,5 +1,5 @@
 import React from 'react'
-//import Notification from "./notification";
+import Notification from "./notification";
 
 function Usermenu(props) {
 
@@ -18,6 +18,7 @@ function Usermenu(props) {
           <li className="user_menu_list_info">School: {user.school.name}</li>
           {user.event ? (<li className="user_menu_list_info">Last Event: {user.event.location}, {user.event.date}</li>) : user.userDate && (<li className="user_menu_list_info">Last Event: {user.userDate}</li>)}
         </ul>
+        <Notification userMenuOpen={userMenuOpen} />
       </div>
 
         </>
@@ -25,4 +26,4 @@ function Usermenu(props) {
 }
 
 export default Usermenu
-//<Notification />
+

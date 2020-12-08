@@ -11,8 +11,8 @@ import { getFromStorage, setInStorage } from "./utils/storage";
 
 //Components
 import Form from "./components/login/form";
-// Components HOC
-import Main from './components/main/main';
+// Components HOC user context api
+import Main from './components/userContext/main';
 // Constant Viewport 
 import Navbar from "./components/navbar/navbar";
 // Pages
