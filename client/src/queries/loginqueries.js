@@ -44,6 +44,7 @@ query($id: ID){
                 name
                 userDate
               event {
+                id
                 date
               }
             }

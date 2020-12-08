@@ -13,7 +13,7 @@ const eventSchema = new Schema({
     },
     date: {
         type:String,
-        default:""
+        default: null
     },
     students: [{
         _id: {type: String},

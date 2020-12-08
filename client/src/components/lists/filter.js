@@ -21,9 +21,9 @@ function Filter(props) {
 
 
     useEffect(()=>{
-        //const studentsLocal = userData.school.school.students
-       //setStudents(studentsLocal)
-       console.log(userData.school)
+        const studentsLocal = userData.school.school.students
+       setStudents(studentsLocal)
+       console.log(studentsLocal)
     },[userData])
 
     /////////////////////////
@@ -33,33 +33,35 @@ function Filter(props) {
     // given date (in events & travel page)
     /////////////////////////
 
-    const replaceDate = () => {
-        // Get students with out event date and replace with userDate
-        let withOutDate = students.filter((x) => x.event == null);
-        withOutDate.forEach(student => {
-            const userDate = student.userDate;
-            student.event = {date: userDate, location: null}
-        })
-
-        // filter again for successful ones
-        // (Students we want to replace now)
-        let withReplacedDate = withOutDate.filter((x) => x.event.date);
-
-        // Replace the students with the students with new event.dates on matching index
-        withReplacedDate.map(student => {
-            const index = students.indexOf(student.name);
-            if(index > -1) {
-               return students[index].replace(student)
-            }
-            return students
-        })
-
-        setStudentsToFilter(students);
-    }
-
     useEffect(()=>{
-       replaceDate()
-    }, [])
+
+        const replaceDate = () => {
+            // Get students with out event date and replace with userDate
+            let withOutDate = students.filter((x) => x.event == null);
+            console.log(withOutDate)
+            withOutDate.forEach(student => {
+                const userDate = student.userDate;
+                student.event = {date: userDate, location: null}
+            }) 
+            // filter again for successful ones
+            // (Students we want to replace now)
+            let withReplacedDate = withOutDate.filter((x) => x.event.date);
+    
+            // Replace the students with the students with new event.dates on matching index
+            withReplacedDate.map(student => {
+                const index = students.indexOf(student.name);
+                if(index > -1) {
+                   return students[index].replace(student)
+                }
+                return students
+            })
+    
+            setStudentsToFilter(students);
+            console.log(students)
+        }
+    
+       replaceDate();
+    }, [students])
 
 
     /////////////////////////
@@ -108,14 +110,15 @@ function Filter(props) {
             filteredStudents = studentsWithdate.filter((x) =>  Math.floor((d1 - parseISO(x.event.date))/1000/60/60/24) > filterMin);
         }
 
-        //Push students with no initial date to the end of the list only if green status is chosen
-        if(filteredStudents != null && filter === 15) {
+        //Push students with no initial date to the end of the list only if red status is chosen
+        if(filteredStudents != null && filter === '7') {
 
         // Students still without any event date 
         let studentsWithOutDate = studentsToFilter.filter(x=> x.event == null)
             filteredStudents.push(studentsWithOutDate);
-        }
+            console.log(studentsWithOutDate)
 
+        }
         // Set results
         setFilterStudents(filteredStudents);    
         setTimeout(()=> {
@@ -176,12 +179,15 @@ function Filter(props) {
                         let d1 = Date.now();
                         let d2 = parseISO(student.event.date)
                         let daysDiff = Math.floor(((((d1 - d2)/1000)/60)/60)/24);
-
+                    
                         daysDiff < 14
                         ? daysDiff < 7 
                             ? color='red'
                             : color='orange'
-                        : color='green'    
+                        : color='green' 
+                        
+                        if(isNaN(daysDiff)){color='red'}  // event.date == null => dayDiff return NaN
+
                     } else {
                         // for students with no event.date
                         color = 'green'
