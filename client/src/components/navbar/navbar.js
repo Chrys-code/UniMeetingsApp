@@ -63,8 +63,7 @@ function Navbar(props) {
           <img src={require('../../Assets/User/user_icon.png').default} alt="user_illustration"></img>
         </div>
       </div>
-        <Usermenu user={user} userMenuOpen={userMenuOpen} />
-
+      <Usermenu user={user} userMenuOpen={userMenuOpen} />
   </div>
 
 )

@@ -37,7 +37,6 @@ function Filter(props) {
         const replaceDate = () => {
             // Get students with out event date and replace with userDate
             let withOutDate = students.filter((x) => x.event == null);
-            console.log(withOutDate)
             withOutDate.forEach(student => {
                 const userDate = student.userDate;
                 student.event = {date: userDate, location: null}
@@ -164,7 +163,7 @@ function Filter(props) {
                 {isLoading ? 
                 <div>Loading Students ...</div> 
                 : orderedStudents && orderedStudents.map(student => {
-                    let color = "red";
+                    let color = "#FF6E79";
 
                     if(student.event) {
                         let d1 = Date.now();
@@ -173,15 +172,15 @@ function Filter(props) {
                     
                         daysDiff < 14
                         ? daysDiff < 7 
-                            ? color='red'
-                            : color='orange'
-                        : color='green' 
+                            ? color='#FF6E79'
+                            : color='#FFA500'
+                        : color='#6BA46A' 
                         
-                        if(isNaN(daysDiff)){color='red'}  // event.date == null => dayDiff return NaN
+                        if(isNaN(daysDiff)){color='#FF6E79'}  // event.date == null => dayDiff return NaN
 
                     } else {
                         // for students with no event.date
-                        color = 'green'
+                        color = '#6BA46A'
                     }
 
                     return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{student.event.date === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>

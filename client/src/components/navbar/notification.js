@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
+import "./notificationStyle.scss";
 // Local Data
 import UserContext from '../../userData/userData';
 // Verify User: Token
@@ -30,7 +31,7 @@ function Notification(props) {
     }, [userData])
 
     useEffect(()=> {
-      if(userMenuOpen == true) {
+      if(userMenuOpen === true) {
         fecthUserUpcomingEvent();
       }
     }, [eventId,userId, userMenuOpen])
@@ -57,6 +58,7 @@ function Notification(props) {
               .then((res) => res.json())
               .then((json) => {
                 if (json.success) {
+                  console.log(json)
                   json.events.forEach(e => {
 
                     let students = [];
@@ -70,9 +72,9 @@ function Notification(props) {
                       return
                     } else {
                       notificationDetails.push({_id:e._id, creator: {_id: e.creator._id, name: e.creator.name}, location: e.location, date: e.date, students: students })
-                      setNotificationDetails(notificationDetails);
                     }
-                    setLoading(false);  
+                    setNotificationDetails(notificationDetails);
+
                   })
                   setLoading(false)
                 } else {
@@ -91,16 +93,23 @@ function Notification(props) {
            {notificationDetails && notificationDetails.map(notification => {
              return (
                <div className="notification_tile" key={notification._id}>
-                 <h4>Invited By: {notification.creator.name}</h4>
-                 <div className="notification_body">
-                 <p>Location:{notification.location}</p>
-                 <p>date:{notification.date}</p>
-                 <ul>participants:{notification.students.map(student=>{
+                 <div className="notification_tile_header">
+                 <h4>Invitation from {notification.creator.name}</h4>
+                 </div>
+                 <div className="notification_tile_body">
+                 <p>Location: <span>{notification.location}</span></p>
+                 <p>Date:  <span>{notification.date}</span></p>
+                 <ul>Participants:{notification.students.map(student=>{
                    return (
                    <li key={student._id}>{ student.name}</li>
                    )
                  })}</ul>
                  </div>
+                 <div className="buttons">
+            <button className="accept" style={{color: '#6ba46a'}}>Accept</button>
+            <button className="decline" style={{color: '#FF6E79'}}>Decline</button>
+           </div>
+
                </div>
              )
            })}
