@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 // Server Data
 import {graphql} from 'react-apollo';
 import {getStudentQuery} from "../../queries/loginqueries";
@@ -14,9 +14,19 @@ function Main (props) {
 
     const { getStudentQuery, getSchoolOfStudentQuery, children } = props;
 
+    const [loading, setLoading] = useState(true)
+
+    useEffect(()=> {
+      if  (getStudentQuery.loading === false && getSchoolOfStudentQuery.loading === false) {
+          setTimeout(()=> {
+              setLoading(false)
+          }, 1000)
+      }
+    }, [getStudentQuery, getSchoolOfStudentQuery])
+
     return (
             <UserContext.Provider value={{ user: getStudentQuery, school: getSchoolOfStudentQuery}}>
-                {getStudentQuery.loading || getSchoolOfStudentQuery.loading ? <div>Loading page...</div> : children}
+                {loading ? <div className="loader"> <p>Collecting data ...</p> </div> : children}
             </UserContext.Provider>
         )
     }

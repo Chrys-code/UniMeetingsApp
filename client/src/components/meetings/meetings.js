@@ -15,6 +15,7 @@ function Meetings(props) {
         const [day, setDays] = useState('01');
         const [month, setMonth] = useState('01');
         const [place, setPlace] = useState('');
+        const [buttonLabel, setButtonLabel] = useState('Send')
 
         // Display Purposes
         const [searchList, setSearchList] = useState([]); // initial list
@@ -55,9 +56,7 @@ function Meetings(props) {
                 let withoutUser = students.filter((x)=> x.id !== creatorStudent._id)
                 setSearchList(withoutUser)
         }, [students, creatorStudent])
-
-
-
+    
         //////////////////////////
         // Send data to the server on event creation
         //////////////////////////
@@ -80,7 +79,13 @@ function Meetings(props) {
               .then((json) => {
                 if (json.success) {
                   setLoading(false);
+                  setButtonLabel('Event created!')
+                  var id = setTimeout(()=>{
+                    setButtonLabel('Send')
+                }, 4000)
+        
                 } else {
+                    setButtonLabel("Event already exist")
                   setLoading(false);
                 }  
               });
@@ -286,7 +291,7 @@ function Meetings(props) {
                    </ul>
                 </div>
 
-                   {isLoading ? <div>Loading ...</div> : <button type="submit">Send</button>}
+                        {isLoading ?  <button type="submit">Loading ...</button> : <button type="submit">{buttonLabel}</button>}
                 </form>
             </div>
         </motion.div>

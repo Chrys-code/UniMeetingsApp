@@ -44,10 +44,8 @@ export function Form(props) {
                         <input name="password" type="text" placeholder="Password" onChange={(e)=>inputHandlers.passwordInputHandler(e)}/>
                     </div>
 
-                        {signInErr &&  <p>{signInErr}</p>}
-
                     <div className="field">
-                        <button className="login_button">Login</button>
+                        <button className="login_button">{signInErr ? signInErr : 'Login'} </button>
                     </div>
                 </form>
             </>

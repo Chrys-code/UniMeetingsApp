@@ -30,7 +30,6 @@ function App(props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   // Fetch & response
-  const [isLoading, setIsLoading] = useState(true);
   const [signInErr, setSignInErr] = useState('');
   const [token, setToken] = useState('');
   const [id, setId] = useState('');
@@ -57,14 +56,13 @@ function App(props) {
         
           setToken(token)
           setId(json.userId)
-          setIsLoading(false)  
           setSchoolId(schoolId)
           }
         } else {
-          setIsLoading(false)
+          return
         }});
       } else {
-        setIsLoading(false)
+        return
       }
   },[])
 
@@ -76,7 +74,7 @@ function App(props) {
 
     async function onSignIn(e) {
       e.preventDefault();
-      setIsLoading(true)
+
        await fetch("/api/account/signin", {
         method: "POST",
         headers: {
@@ -93,13 +91,16 @@ function App(props) {
           if (json.success) {
             setId(json.id);
             setSchoolId(json.schoolId)
-            setSignInErr(json.message);
-            setIsLoading(false);
+            setSignInErr(json.message.split(':')[1]);
             setToken(json.token);
             setInStorage("login_app", { token: json.token, schoolId: schoolId });
           } else {
-            setSignInErr(json.message);
-            setIsLoading(false);
+            setSignInErr(json.message.split(':')[1]);
+            setTimeout(()=>{
+              setSignInErr('Login')
+            }, 2000)
+            console.log(signInErr)
+
           }  
         });
     }
@@ -124,13 +125,13 @@ function App(props) {
   ////////////////////////////////
 
   const variants = {
-    initial: { opacity: 0, scale: 1.1 },
+    initial: { opacity: 0, scale: 1.05 },
     visible: { opacity: 1, scale: 1  },
-    hidden: { opacity: 0 , scale: 1.1 },  
+    hidden: { opacity: 0 , scale: 1.05 },  
   }
 
   const transition = {
-    duration: .5,
+    duration: .3,
   }
 
 
@@ -140,7 +141,6 @@ function App(props) {
 
   if (!token) {
     return (
-      isLoading ? <div>Loading ... </div> :
         <div className="login">
             <div className="login_logo_container">
             <img src={require('./Assets/Login/Iconlogo.png').default} alt=""/>

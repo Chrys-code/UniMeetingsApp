@@ -94,8 +94,11 @@ function Notification(props) {
                       notificationDetails.push({_id:e._id, creator: {_id: e.creator._id, name: e.creator.name}, location: e.location, date: e.date, students: students })
                     }
                     setNotificationDetails(notificationDetails);
+                    notificationIndicator();
                   })
+
                   setLoading(false)
+
                 } else {
                   setLoading(false)
                 }
@@ -128,6 +131,7 @@ function Notification(props) {
             if (json.success === true) {
               const withoutAnswered = notificationDetails.filter((x)=> x._id !== json.id)
               setNotificationDetails(withoutAnswered);  
+              notificationIndicator();
             }
           });
     }
@@ -163,9 +167,10 @@ function Notification(props) {
 
 
     return (<>
-    {loading ? <div>Loading events ...</div>: 
+    
         <div className="notifications">
-           {notificationDetails && notificationDetails.map((notification) => {
+          {loading ? <div className="loader"><p>Loading events ...</p></div>: 
+           notificationDetails && notificationDetails.map((notification) => {
              return (
                <div className="notification_tile" key={notification._id}>
                  <div className="notification_tile_header">
@@ -180,15 +185,16 @@ function Notification(props) {
                    )
                  })}</ul>
                  </div>
-                 <div className="buttons">
-            <button  className="accept" style={{color: '#6ba46a'}}  value="true" onClick={(e)=>onAnswer(e, notification._id)}>Accept</button>
-            <button  className="decline" style={{color: '#FF6E79'}} value="false" onClick={(e)=>onAnswer(e,  notification._id)}>Decline</button>
-           </div>
-
+                        <div className="buttons">
+                          <button  className="accept" style={{color: '#6ba46a'}}  value="true" onClick={(e)=>onAnswer(e, notification._id)}>Accept</button>
+                          <button  className="decline" style={{color: '#FF6E79'}} value="false" onClick={(e)=>onAnswer(e,  notification._id)}>Decline</button>
+                        </div>
+                
                </div>
              )
-           })}
-        </div>}
+           })
+           }
+        </div>
     </>)
 }
 

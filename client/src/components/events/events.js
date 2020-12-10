@@ -16,8 +16,9 @@ function Events(props) {
     const [day, setDays] = useState('01');
     const [month, setMonth] = useState('01');
     const [isLoading, setLoading] = useState(false);
+    const [buttonLabel, setButtonLabel] = useState('Send')
     // Mutation
-    const [addDate, {loading}] = useMutation(addUserDate)
+    const [addDate, {data, loading}] = useMutation(addUserDate)
     //Local Data for mutation
     const userData = useContext(UserContext);
     const id = userData.user.student.id;
@@ -32,6 +33,20 @@ function Events(props) {
             }, 1000)
         }
     },[loading])
+
+    useEffect(()=> {
+        if(data !== undefined && data !== null) {
+            setButtonLabel('Sent!')
+        }
+
+        var id = setTimeout(()=>{
+            setButtonLabel('Send')
+        }, 3000)
+
+        return ()=>{
+            clearTimeout(id)
+        }
+    }, [data])
     
 
     //////////////////////////
@@ -114,7 +129,7 @@ function Events(props) {
                     </select>{" "}<br/>
 
 
-                    {isLoading  ? <div>Loading...</div> : <button type="submit">Send</button>}
+                        {isLoading ? <button type="submit">Loading ...</button> : <button type="submit">{buttonLabel}</button>}
                 </form>
             </div>
         </motion.div>

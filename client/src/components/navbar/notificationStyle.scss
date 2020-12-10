@@ -1,8 +1,15 @@
 .notifications {
   position: relative;
+
+  .loader {
+    p {
+      text-align: center;
+    }
+  }
+
   .notification_tile {
     position: relative;
-    width: 90vw;
+    width: 80vw;
     margin: auto;
     margin-top: 20px;
     padding: 5px;
