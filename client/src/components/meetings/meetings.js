@@ -64,7 +64,7 @@ function Meetings(props) {
 
         async function onCreateEvent() {
             setLoading(true)
-             await fetch("/userevent/createEvent", {
+             await fetch("/userevent/createevent", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

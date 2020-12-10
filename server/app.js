@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require('mongoose');
 const userAuth = require("./authentication/userauth.js");
 const addEvent = require("./userEvents/addEvent.js");
+const confirmEvent = require("./userEvents/confirmEvent.js");
 const notification = require("./userEvents/notification");
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -31,6 +32,7 @@ app.use(cors());
 //////////////////////
 app.use("/api", userAuth);
 app.use("/userevent", addEvent);
+app.use("/userevent", confirmEvent);
 app.use("/userevent", notification);
 app.use('/graphql', graphqlHTTP({
     schema: schema,

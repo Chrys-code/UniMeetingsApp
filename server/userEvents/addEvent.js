@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Event = require("../models/event");
 
-router.post("/createEvent", (req, res, next) => {
+router.post("/createevent", (req, res, next) => {
     const {body} = req;
     const {creator, date, location, students} = body;
     if (!creator) {

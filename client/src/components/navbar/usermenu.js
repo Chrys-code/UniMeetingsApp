@@ -27,7 +27,7 @@ function Usermenu(props) {
             </ul>
             </div>
         </div>
-          <Notification userMenuOpen={userMenuOpen} />
+          <Notification userMenuOpen={userMenuOpen} setIndicator={props.setIndicator} />
         </div>
       </div>
 

@@ -9,6 +9,7 @@ const Event = require('../models/event');
 const {GraphQLObjectType,
     GraphQLInputObjectType,
     GraphQLString,
+    GraphQLBoolean,
     GraphQLSchema,
     GraphQLID,
     GraphQLInt,
@@ -218,8 +219,6 @@ const Mutation = new GraphQLObjectType({
         },
     }
 })
-
-
 
 
 module.exports = new GraphQLSchema({

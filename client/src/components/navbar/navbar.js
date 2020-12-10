@@ -7,6 +7,7 @@ import UserContext from '../../userData/userData';
 //Components
 import Usermenu from "./usermenu";
 function Navbar(props) {
+  const [indicator, setIndicator] = useState(false)
   // User Data
   const userData = useContext(UserContext);
   const user = userData.user.student;
@@ -59,11 +60,14 @@ function Navbar(props) {
       <button id="escape" onClick={(e)=>onLogOut(e)}><p>←</p></button>
         <div className="navbar_user">
           <p>{user.name}</p>
-        <div className="navbar_user_image_container" onClick={()=>menuHandler()}>
+          
+          <div className="navbar_user_image_container"  onClick={()=>menuHandler()}>
           <img src={require('../../Assets/User/user_icon.png').default} alt="user_illustration"></img>
-        </div>
+          {indicator && <div className="indicator"></div>}
+          </div>
+        
       </div>
-      <Usermenu user={user} userMenuOpen={userMenuOpen} />
+      <Usermenu user={user} userMenuOpen={userMenuOpen} setIndicator={setIndicator} />
   </div>
 
 )
