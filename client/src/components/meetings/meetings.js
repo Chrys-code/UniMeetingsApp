@@ -1,11 +1,20 @@
 import React, {useState, useContext, useEffect} from 'react'
 import './meetingsStyle.scss';
-import { parseISO } from "date-fns";
-import Datefunction from "../../utils/date";
+import Dateandplace from "./dateandplace";
+import Listings from "./listings";
+
 // Page Transition
 import {motion} from 'framer-motion'
 // Local
 import UserContext from '../../userData/userData';
+
+        // forceUpdate hook
+        // for some reason after refactoring I could get React to re render child or even component itself
+        // created a custom hook for forceloading the page
+        function useForceUpdate(){
+            const [value, setValue] = useState(0); 
+            return () => setValue(value => ++value); 
+        }
 
 function Meetings(props) {
 
@@ -18,9 +27,9 @@ function Meetings(props) {
         const [buttonLabel, setButtonLabel] = useState('Send')
 
         // Display Purposes
-        const [searchList, setSearchList] = useState([]); // initial list
-        const [listOfStudents, setListOfStudents] = useState([]); // what user see when they are searching
-        const [invitedStudents, setInvitedStudents] = useState([]); // what users added to event participants
+        const [searchList, setSearchList] = useState([]); // initial list to search from
+        const [listedStudents, setListedStudents] = useState([]) // search results visible list
+        const [invitedStudents, setInvitedStudents] = useState([]); // what user see when they are searching
         // Server - Data purposes
         const [creatorStudent, setCreatorStudent] = useState({}); // event creator id
         const [invitedStudentsId, setInvitedStudentsId] = useState([]);  // participants id array
@@ -31,8 +40,9 @@ function Meetings(props) {
         const students = userData.school.school.students
         const id = userData.user.student.id
         const name = userData.user.student.name;
+        //Assign forceupdate hook
+        const forceUpdate = useForceUpdate();
 
-        
         //////////////////////////
         // Page content 
         // format yyyy-mm-dd
@@ -56,7 +66,8 @@ function Meetings(props) {
                 let withoutUser = students.filter((x)=> x.id !== creatorStudent._id)
                 setSearchList(withoutUser)
         }, [students, creatorStudent])
-    
+
+
         //////////////////////////
         // Send data to the server on event creation
         //////////////////////////
@@ -80,7 +91,7 @@ function Meetings(props) {
                 if (json.success) {
                   setLoading(false);
                   setButtonLabel('Event created!')
-                  var id = setTimeout(()=>{
+                 setTimeout(()=>{
                     setButtonLabel('Send')
                 }, 4000)
         
@@ -96,6 +107,9 @@ function Meetings(props) {
     //////////////////////////
     // Trusted events (input)
     //////////////////////////
+    // Date
+    //////////////////////////
+
 
     function yearInputHandler(e) {
         setYear(e.target.value);
@@ -113,45 +127,56 @@ function Meetings(props) {
         setPlace(e.target.value);
     }
 
+    //////////////////////////
+    // Trusted events (input)
+    //////////////////////////
+    // Invitation list
+    //////////////////////////
+
     function searchStudentHandler(e) {
-            if(e.target.value === "" || e.target.value == null) {
-                setListOfStudents([]);
-            } else {
-                let list =  searchList.filter((x)=> x.name.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1 )
-                setListOfStudents(list);
-       
-            }
+        let list = searchList.filter((x)=> x.name.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1 )
+        setListedStudents(list);
     }
 
     function addStudent(e, student) {
         e.preventDefault();
-
+        console.log('add')
         // prevent student being added twice to the invite list
         const index = invitedStudents.indexOf(student);
         if(index > -1) {
                 return
         } else {
-                // set ids for data exchange with server
-                invitedStudentsId.push({_id: student.id, name: student.name})
-                setInvitedStudentsId(invitedStudentsId)
-                // Add students to list
-                invitedStudents.push(student)
-                setInvitedStudents(invitedStudents)
-                // Once student is added it should be removed from search list and
-                // from listed students
-                var indexOfStudent = invitedStudents.indexOf(student);
-                var restOfStudents = listOfStudents.splice(indexOfStudent, 0)
-                setListOfStudents(restOfStudents);
-                setSearchList(searchList.splice(indexOfStudent, 0))
-                // This requires student being added again after removeing from invite list 
-        }
+        // ADD TO INVITES
+            // set ids for data exchange with server
+            invitedStudentsId.push({_id: student.id, name: student.name})
+            setInvitedStudentsId(invitedStudentsId)
+            // Add students to visible list (user can remove from here)
+            invitedStudents.push(student);
+            setInvitedStudents(invitedStudents)
+            console.log(invitedStudents)
+            
+        // REMOVE FROM CURRENT SEARCH
+            const indexCurr = listedStudents.indexOf(student)
+            if (indexCurr > -1) {
+                listedStudents.splice(indexCurr, 1);
+                setListedStudents(listedStudents)
+            }
 
+
+        // REMOVE FROM SEARCHABLE ITEMS
+            const indexList = searchList.indexOf(student)
+            if (indexList > -1) {
+                searchList.splice(indexList, 1)
+                setSearchList(searchList)
+           }
+        }
+        forceUpdate();
     }
 
     function removeStudent(e, student) {
         e.preventDefault();
 
-
+    // REMOVE
         // remove ids for data exchange with server
         const idIndex = invitedStudentsId.indexOf({_id: student.id, name: student.name})
         const remainingStudentIds = invitedStudentsId.splice(idIndex, 0);
@@ -162,9 +187,17 @@ function Meetings(props) {
         const studentsWithoutRemoved = invitedStudents.splice(index, 0)
         setInvitedStudents(studentsWithoutRemoved)
 
+    // ADD
+        // prevent student being added twice to the search list
+        const searchIndex = searchList.indexOf(student);
+        if(searchIndex > -1) {
+                return
+        } else {
         // Add back to searchlist once student is removed from invite list
         searchList.push(student)
         setSearchList(searchList)
+        }
+        forceUpdate();
     }           
 
 
@@ -183,7 +216,6 @@ function Meetings(props) {
             invitedStudentsId.filter((x) => x._id === creatorStudent._id);
             setInvitedStudentsId(invitedStudentsId)
             // reset listing
-            setListOfStudents([])
             setInvitedStudents([])
         }
 
@@ -195,101 +227,15 @@ function Meetings(props) {
         <motion.div initial="initial" animate="visible" exit="hidden" variants={variants} transition={transition} className="meetings" >
             <div className="meetings_container">
                 <div className="meetings_title">
-                    <h3>Lists</h3>
-                    <p>See the lists of students below:</p>
+                    <h3>Meeting</h3>
+                    <p>Invite others for a meeting</p>
                 </div>
 
              <form onSubmit={(e)=>formHandler(e)}>
-             <div className="meetings_details">
-                <p>Provide date & location</p>
-                <span>Year:</span>{" "}<br/>
-                    <select onChange={(e)=>yearInputHandler(e)}>
-                    {years.map(year=>{ return(
-                            <option key={year} value={year}>{year}</option>
-                        )})}
-                    </select> {" "}<br/>
-
-                    <span>Month:</span>{" "}<br/>
-                    <select onChange={(e)=>monthInputHandler(e)}> 
-                        {months.map(month=>{ return(
-                            <option key={month} value={month}>{month}</option>
-                        )})}
-                    </select>{" "}<br/> 
-
-                    <span>Day:</span>{" "}<br/>
-                    <select onChange={(e)=>dayInputHandler(e)}>
-                        {days.map(day=>{ return(
-                            <option key={day} value={day}>{day}</option>
-                        )})}
-                    </select>{" "}<br/>
-                <p>Provide address or place name</p>
-                <div className="field">
-                   <div className="field_icon">
-                        <img src={require('../../Assets/Login/lockmail.png').default} alt="" />
-                   </div>
-                   <input name="place" type="text" placeholder="Address or place name" onChange={(e)=>placeInputHandler(e)} />
-                </div>
-             </div>
+             <Dateandplace inputHandlers={{ yearInputHandler, monthInputHandler, dayInputHandler, placeInputHandler}} inputOptions={{days, months, years}} />
 
 
-                <div className="participant_list">
-                   <p>Student:<span>Last event:</span></p> 
-                   <ul>
-                        {invitedStudents && invitedStudents.map(student =>{
-
-                                 let color;
-                             
-                                 let d1 = Date.now();
-                                 let d2 ;
-                                 student.event == null ? d2 = parseISO(student.userDate) : d2 = parseISO(student.event.date)
-                                 let daysDiff = Math.floor(((((d1 - d2)/1000)/60)/60)/24);
-                        
-                                 daysDiff < 14
-                                 ? daysDiff < 7 
-                                     ? color='red'
-                                     : color='orange'
-                                 : color='green'    
-
-                                return(
-                                        <li style={{"--color": color}} key={student.name}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
-                                        <button className="remove-btn" onClick={(e)=>removeStudent(e, student)} > - </button>
-                                     </li>
-                                )
-                        })}
-                   </ul>
-                </div>
-
-                <div className="search_students participant_list">
-                   <div className="field">
-                      <div className="field_icon">
-                         <img src={require('../../Assets/Meetings/students.png').default} alt="" />
-                      </div>
-                      <input type="text" name="student" placeholder="Search for student..." onChange={(e)=>searchStudentHandler(e)} />
-                   </div>
-
-                   <ul>
-                           {listOfStudents.map(student => {
-                                    let color;
-                             
-                                        let d1 = Date.now();
-                                        let d2 ;
-                                        student.event == null ? d2 = parseISO(student.userDate) : d2 = parseISO(student.event.date)
-                                        let daysDiff = Math.floor(((((d1 - d2)/1000)/60)/60)/24);
-                         
-                                        daysDiff < 14
-                                        ? daysDiff < 7 
-                                            ? color='red'
-                                            : color='orange'
-                                        : color='green'    
-                                     
-                                return (
-                                    <li style={{"--color": color}} key={student.name}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
-                                        <button  className="add-btn" style={{color: '#6BA46A', boxShadow: '4px 2px 10px #6BA46A'}} onClick={(e)=>addStudent(e, student)}> + </button>
-                                    </li>              
-                                )
-                           })}
-                   </ul>
-                </div>
+            <Listings functions={{addStudent, removeStudent, searchStudentHandler}} states={{listedStudents, invitedStudents}}/>
 
                         {isLoading ?  <button type="submit">Loading ...</button> : <button type="submit">{buttonLabel}</button>}
                 </form>

@@ -51,11 +51,19 @@ app.use('/graphql', graphqlHTTP({
 */ 
 function updateEventId() {
 
-    // Need to find a proper date to match... otherwise it works
-    const serverDate = '2020-12-10'  //new Date();
-
+    // Format new Date to match "yyyy-mm-dd" as stored in DB
+        var d = new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        const serverDate = [year, month, day].join('-');
     console.log(serverDate)
-
 
      Event.find({
         date: serverDate
@@ -100,7 +108,7 @@ function updateEventId() {
 // User eventId updater run once a day 
 setInterval(()=> {
     updateEventId();
-}, 1000*60*60*24)
+}, 1000*60*60)
 
 
 app.listen(PORT, ()=> {

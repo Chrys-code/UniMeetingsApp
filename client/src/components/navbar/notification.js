@@ -84,7 +84,9 @@ function Notification(props) {
                   json.events.forEach(e => {
                     let students = [];
                     e.students.forEach(student => {
-                      students.push(student)
+                      if(student.accepted !== null && student.accepted !== "" && student.accepted !== undefined && student.accepted !==false){
+                        students.push(student)
+                      }
                     })
 
                     const exist = notificationDetails.filter((x) => x._id === e._id)
