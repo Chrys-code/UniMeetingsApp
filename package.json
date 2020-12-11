@@ -5,8 +5,10 @@
   "main": "./server/app.js",
   "scripts": {
     "installPackages": "npm run install && cd client && npm run install && cd server && npm run install",
+    "install-client": "cd client && npm run build",
+    "heroku-postbuild": "npm run install-client && npm run build",
     "client": "cd client && npm run start",
-    "server": "cd server && nodemon app.js && cd..",
+    "server": "cd server && nodemon app.js",
     "dev": "concurrently -n 'server,client' -c 'red,green' \"npm run server\" \"npm run client\""
   },
   "author": "",
