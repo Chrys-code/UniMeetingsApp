@@ -22,7 +22,6 @@ require("dotenv/config");
 const Event = require("./models/event");
 const Student = require('./models/student');
 
-const PORT = process.env.PORT || 8080 ;
 mongoose.connect(process.env.DB_CONN, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -33,6 +32,11 @@ mongoose.connection.on('open', ()=>{
     console.log('Connected to Database')
 });
 
+//Heroku connect
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("../client/build"));
+}
+  
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -141,6 +145,7 @@ setInterval(()=> {
     updateEventId();
 }, 1000*60*60)
 
+const PORT = process.env.PORT || 8080 ;
 
 app.listen(PORT, ()=> {
     console.log(`server run at port:${PORT}`)

@@ -1,5 +1,6 @@
 {
-  "name": "client",
+  "name": "com623", 
+  "proxy": "http://localhost:8080/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,6 +47,5 @@
   },
   "devDependencies": {
     "sass": "^1.29.0"
-  },
-  "proxy": "http://localhost:8080/"
+  }
 }
