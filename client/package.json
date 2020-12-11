@@ -2,7 +2,6 @@
   "name": "com623", 
   "proxy": "http://localhost:8080/",
   "version": "0.1.0",
-  "main": "App.js",
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
