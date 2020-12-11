@@ -7,20 +7,19 @@ export function Form(props) {
 
     function displaySchools() {
         var data = schoolsData;
-        if(data.loading) {
+        if (data.loading) {
             return (<option > Loading Options ...</option>)
-        } else {
-            return data && data.schools && data.schools.map(school => {
-                if(school ){
-                    return(
-                        <option key={school.id} value={school.id}>{school.name}</option>
-                        )        
-                } else {
-                    return (<option>No data...</option>)
-                }
-            })
-        }
-        
+          } else {
+            if (data && data.schools) {
+              data.schools.map(school => {
+                return (
+                  <option key={school.id} value={school.id}>{school.name}</option>
+                )
+              })
+            }else{
+              return (<option > Data issue... </option>)
+            }
+          }        
     }
 
 
