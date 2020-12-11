@@ -22,7 +22,7 @@ require("dotenv/config");
 const Event = require("./models/event");
 const Student = require('./models/student');
 
-mongoose.connect(process.env.DB_CONN, {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/unimeetingsapp', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
