@@ -16,7 +16,7 @@ export function Form(props) {
                         <option key={school.id} value={school.id}>{school.name}</option>
                         )        
                 } else {
-                    return (<div>No data...</div>)
+                    return (<option>No data...</option>)
                 }
             })
         }
