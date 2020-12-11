@@ -10,15 +10,11 @@ export function Form(props) {
         if (data.loading) {
             return (<option > Loading Options ...</option>)
           } else {
-            if (data && data.schools) {
-              data.schools.map(school => {
+             data && data.schools && data.schools.map(school => {
                 return (
                   <option key={school.id} value={school.id}>{school.name}</option>
                 )
               })
-            }else{
-              return (<option > Data issue... </option>)
-            }
           }        
     }
 
