@@ -1,16 +1,12 @@
-
-// to be continued...
-
 const express = require("express");
 const router = express.Router();
 const User = require("../models/student");
-const UserSession = require('../models/usersession');
 
 //////////////////////////////////////
 // Sign-up (School privilege fro their students)
 //////////////////////////////////////
 
-router.post("/account/signup", (req, res, next) => {
+router.post("/signup", (req, res, next) => {
   const { body } = req;
   console.log("body", body);
 
@@ -74,3 +70,5 @@ router.post("/account/signup", (req, res, next) => {
   );
 });
 
+
+module.exports = router;

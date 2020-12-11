@@ -21,7 +21,6 @@ import Events from "./components/events/events";
 import Lists from "./components/lists/lists";
 import Meetings from './components/meetings/meetings';
 
-
 // App
 function App(props) {
 
@@ -140,7 +139,7 @@ function App(props) {
   ////////////////////////////////
 
   if (!token) {
-    return (
+    return (<>
         <div className="login">
             <div className="login_logo_container">
             <img src={require('./Assets/Login/Iconlogo.png').default} alt=""/>
@@ -148,7 +147,9 @@ function App(props) {
             <p>Let your school know if you travel {" "} & Protect your friends</p>
             <Form inputHandlers={{onSignIn ,organizationInputHandler, nameInputHandler, passwordInputHandler}} schoolsData={props.data} signInErr={signInErr} />
         </div>
-    );
+
+
+    </>);
 } else {
   return (
       <div className="App" >

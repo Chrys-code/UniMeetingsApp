@@ -14,6 +14,7 @@ function Notification(props) {
     const [loading, setLoading] = useState(false);
     //notification details
     const [notificationDetails, setNotificationDetails] = useState([]);
+    const [reminder, setReminder] = useState([]);
 
     //user data
     const userData = useContext(UserContext);
@@ -81,16 +82,21 @@ function Notification(props) {
               .then((res) => res.json())
               .then((json) => {
                 if (json.success) {
+
+                  // Get all upcoming events
                   json.events.forEach(e => {
                     let students = [];
+                    // create list of students who accepted the invite
                     e.students.forEach(student => {
-                      if(student.accepted !== null && student.accepted !== "" && student.accepted !== undefined && student.accepted !==false){
+                      if(student.accepted === true){
                         students.push(student)
                       }
                     })
-
+                    //creators should not get their own notification
+                    const eventCreator = students.filter((x) => x._id === userId)
+                    // add to notificationDetails 
                     const exist = notificationDetails.filter((x) => x._id === e._id)
-                    if (exist.length >= 1) {
+                    if (exist.length >= 1 || eventCreator.length === 1) {
                       return
                     } else {
                       notificationDetails.push({_id:e._id, creator: {_id: e.creator._id, name: e.creator.name}, location: e.location, date: e.date, students: students })
@@ -98,6 +104,23 @@ function Notification(props) {
                     setNotificationDetails(notificationDetails);
                     notificationIndicator();
                   })
+
+
+
+                  //Get all upcoming events
+                  // if answered by user, save to "reminder"
+                  json.events.forEach((e, index)=> {
+                    let acceptedList = [];
+
+                    const user = e.students.filter((x)=> x._id === userId)
+                   if(user[index].accepted === true) {
+                      acceptedList.push(e)
+
+                   }
+                   setReminder(acceptedList)
+                  })
+
+
 
                   setLoading(false)
 
@@ -152,16 +175,26 @@ function Notification(props) {
 
     }, [userData])
 
+    // initial request for invites
+    useEffect(()=>{
+      fecthUserUpcomingEvent();
+      notificationIndicator();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     // On menu open request fetch
+    // refresh on menu open
     useEffect(()=> {
       if(userMenuOpen === true) {
         fecthUserUpcomingEvent();
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userMenuOpen])
 
     // Custon setInterval hook:
     // Fetching data and turn notification indicator
+    // per 15s
     useInterval(()=> {
       fecthUserUpcomingEvent();
       notificationIndicator();
@@ -171,8 +204,29 @@ function Notification(props) {
     return (<>
     
         <div className="notifications">
+        <div className="notification_tile">
+                 <div className="notification_tile_header">
+                 <h4>Accepted Meetings:</h4>
+                 </div>
+                 <div className="notification_tile_body">
+                    {reminder && reminder.map(meeting => {
+                      return (
+                        <div className="reminder" key ={meeting._id}>
+                        <p>Created: {meeting.creator.name}</p>
+                        <p>Location: <span>{meeting.location}</span></p>
+                        <p>Date:  <span>{meeting.date}</span></p>
+                        </div>
+                      )
+                    } )}
+                 </div>
+
+          </div>
+
           {loading ? <div className="loader"><p>Loading events ...</p></div>: 
-           notificationDetails && notificationDetails.map((notification) => {
+
+          
+
+          notificationDetails && notificationDetails.map((notification) => {
              return (
                <div className="notification_tile" key={notification._id}>
                  <div className="notification_tile_header">

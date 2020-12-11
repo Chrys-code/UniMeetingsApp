@@ -49,7 +49,7 @@ router.post("/getupcomingevents", (req, res, next) => {
 
                   events.forEach(e =>{
                     e.students.forEach(student=> {
-                      if(student._id == userId && student.accepted == null) {
+                      if(student._id == userId) {
                         eventList.push(e)
                       }
                     })

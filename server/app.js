@@ -3,10 +3,18 @@ const {graphqlHTTP} = require('express-graphql');
 const schema = require('./schema/schema');
 const app = express();
 const mongoose = require('mongoose');
+// user Auth
 const userAuth = require("./authentication/userauth.js");
+// user Events
 const addEvent = require("./userEvents/addEvent.js");
 const confirmEvent = require("./userEvents/confirmEvent.js");
 const notification = require("./userEvents/notification");
+// org auth
+const orgAuth = require("./authentication/orgauth");
+// org Events
+const register = require("./orgEvents/studentregister");
+
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require("dotenv/config");
@@ -33,10 +41,21 @@ app.use(cors());
 //////////////////////
 // Routes
 //////////////////////
+
+// user Auth
 app.use("/api", userAuth);
+// user Events
 app.use("/userevent", addEvent);
 app.use("/userevent", confirmEvent);
 app.use("/userevent", notification);
+// org Auth
+app.use("/api/org", orgAuth);
+// org Events
+app.use("/api/org", register);
+
+
+
+
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     graphiql: true,
@@ -44,10 +63,10 @@ app.use('/graphql', graphqlHTTP({
 
 /** 
  * Automatic eventId updater for users
- * Once serverDate == given event date  && student accepted the notification
- * Update eventId based students._id within event
- * if declined student will be removed from event when answering notification
- * if answer === null student will be skipped on update squence
+ * Once serverDate == event.date(yyyy-mm-dd) && event.student.accepted === true
+ * Update student.eventId = event._id based event.students._id (student.eventId works as secondary kay to request event by ID withi graphQL)
+ * if event.student.accepted === false, filtered out when listing participants in notifications + skipped during update
+ * if answer === null student will also be skipped on the update squence
 */ 
 function updateEventId() {
 
@@ -63,8 +82,10 @@ function updateEventId() {
             day = '0' + day;
     
         const serverDate = [year, month, day].join('-');
-    console.log(serverDate)
 
+    ////////////////////////////////////
+    // Find every event for current day
+    ////////////////////////////////////
      Event.find({
         date: serverDate
     },            
@@ -72,28 +93,36 @@ function updateEventId() {
         if(err) {
         return res.send({
             success: false,
-            message: "Error: Smth went wrong"
+            message: "Error: Couldn't find event"
         });
-        } else {
-            console.log(events);
-          
+        } else {       
+            ////////////////////////////////////
+            // For each event find students
+            // With answer === true
+            // Update those students
+            ////////////////////////////////////
           events.forEach(e =>{
             e.students.forEach(student=> {
-
               if(student.accepted == true) {
-               // get each sctudent fron DB and update their eventId : e._id
                Student.findOneAndUpdate(
                    {_id: student._id},
                    {'$set': {eventId: e._id} },
                    {new: true},
                    (err, success) => {
                        if(err){
-                           return console.log(err)
+                           return res.send({
+                               success: false,
+                               message: "Error during update."
+                           })
                        } else if (success) {
-                           return console.log(success)
-                       }
+                        return res.send({
+                            success: true,
+                            message: "Successfully updated!"
+                        })
+                    }
                    }
-                   )
+                )
+
               } else {
                   return
               }
@@ -105,7 +134,9 @@ function updateEventId() {
 );
 }
     
-// User eventId updater run once a day 
+////////////////////////////////////
+// Run updater once every hour
+////////////////////////////////////
 setInterval(()=> {
     updateEventId();
 }, 1000*60*60)
