@@ -62,7 +62,6 @@ app.use("/api/org", register);
 
 app.use('/graphql', graphqlHTTP({
     schema: schema,
-    graphiql: false,
 }))
 
 /** 
@@ -147,6 +146,4 @@ setInterval(()=> {
 
 const PORT = process.env.PORT || 8080 ;
 
-app.listen(PORT, ()=> {
-    console.log(`server run at port:${PORT}`)
-})
+app.listen(PORT)
