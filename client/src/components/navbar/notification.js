@@ -105,22 +105,21 @@ function Notification(props) {
                     notificationIndicator();
                   })
 
-
-
                   //Get all upcoming events
                   // if answered by user, save to "reminder"
                   json.events.forEach((e, index)=> {
                     let acceptedList = [];
 
-                    const user = e.students.filter((x)=> x._id === userId)
-                   if(user[index].accepted === true) {
-                      acceptedList.push(e)
+                    e.students.forEach(student => {
+                      if (student._id === userId ) {
+                        if(student.accepted === true){
+                          acceptedList.push(e)
+                        }  
+                      }
+                    })
 
-                   }
                    setReminder(acceptedList)
                   })
-
-
 
                   setLoading(false)
 
