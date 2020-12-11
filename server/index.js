@@ -32,7 +32,7 @@ mongoose.connection.on('open', ()=>{
     console.log('Connected to Database')
 });
 
-//Heroku connect
+// heroku
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("../client/build"));
 }
@@ -57,11 +57,9 @@ app.use("/api/org", orgAuth);
 // org Events
 app.use("/api/org", register);
 
-
-
-
 app.use('/graphql', graphqlHTTP({
     schema: schema,
+    graphiql: false
 }))
 
 /** 
