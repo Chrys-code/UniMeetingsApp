@@ -5,19 +5,6 @@ export function Form(props) {
 
     const {schoolsData, inputHandlers, signInErr} = props;
 
-    function displaySchools() {
-        var data = schoolsData;
-        if (data.loading) {
-            return (<option > Loading Options ...</option>)
-          } else {
-             data && data.schools && data.schools.map(school => {
-                return (
-                  <option key={school.id} value={school.id}>{school.name}</option>
-                )
-              })
-          }        
-    }
-
 
         return (
             <>
@@ -25,7 +12,11 @@ export function Form(props) {
                     <div className="field_select">
                         <select name="schoolId" onChange={(e)=>inputHandlers.organizationInputHandler(e)}>
                             <option>Organization</option>
-                                {displaySchools()}
+                                {schoolsData.loading ? <option> Loading ... </option> : schoolsData.schools !== undefined ? schoolsData.schools.map(school => {
+                                    return (
+                                        <option key={school.id} value={school.id}>{school.name}</option>
+                                    )
+                                }) : null }
                         </select>
                     </div>
 

@@ -32,6 +32,7 @@ function App(props) {
   const [signInErr, setSignInErr] = useState('');
   const [token, setToken] = useState('');
   const [id, setId] = useState('');
+  const [data, setData] = useState({});
   // Page transition
   const location = useLocation();
   ////////////////////////////////
@@ -64,6 +65,13 @@ function App(props) {
         return
       }
   },[])
+
+
+  useEffect(()=>{
+    if(props.data.loading === false) {
+      setData(props.data)
+    }
+  },[props.data])
 
   ////////////////////////////////
   // Trusted Events
@@ -133,7 +141,6 @@ function App(props) {
     duration: .3,
   }
 
-
   ////////////////////////////////
   // Render Function
   ////////////////////////////////
@@ -145,7 +152,7 @@ function App(props) {
             <img src={require('./Assets/Login/Iconlogo.png').default} alt=""/>
             </div>
             <p>Let your school know if you travel {" "} & Protect your friends</p>
-            <Form inputHandlers={{onSignIn ,organizationInputHandler, nameInputHandler, passwordInputHandler}} schoolsData={props.data} signInErr={signInErr} />
+            <Form inputHandlers={{onSignIn ,organizationInputHandler, nameInputHandler, passwordInputHandler}} schoolsData={data} signInErr={signInErr} />
         </div>
 
 

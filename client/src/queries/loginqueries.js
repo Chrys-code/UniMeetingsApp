@@ -5,7 +5,7 @@ import {gql} from 'apollo-boost';
 
 // Login: load schools to chose
 const getSchoolsQuery = gql`
- {
+query{
     schools {
         id
         name
