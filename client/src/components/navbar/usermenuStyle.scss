@@ -6,13 +6,13 @@
   right: 0px;
   background: #e9e9e9;
   transform: translateX(100%);
-  transition: 0.3s ease;
   padding: 0px 0px 50px 0px;
   z-index: 10;
 
   .user_menu_tile {
     position: relative;
     width: 80vw;
+    min-height: 90px;
     margin: auto;
     padding: 5px;
     border-radius: 13px;
@@ -33,6 +33,10 @@
       position: relative;
       width: 100%;
       height: 50px;
+      background-image: url("../../Assets/Login/Icondropdown.png"); /* Add custom arrow */
+      background-repeat: no-repeat;
+      background-position-x: 85%;
+      background-position-y: 10%;
 
       &:after {
         content: "";
@@ -53,6 +57,7 @@
     }
 
     .user_menu_tile_body {
+      overflow: hidden;
       ul {
         width: 80%;
         min-height: 140px;

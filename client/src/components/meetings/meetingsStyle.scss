@@ -50,12 +50,12 @@
       text-align: center;
 
       h3 {
-        color: #6ba46a;
+        color: #40c3fd;
         font-weight: bold;
       }
 
       p {
-        color: #6ba46a;
+        color: #40c3fd;
       }
 
       &:after {
@@ -283,10 +283,10 @@
         height: 48px;
         border: none;
         border-radius: 10px;
-        box-shadow: 4px 2px 10px #ff6e7a7e;
+        box-shadow: 4px 2px 10px #6ba46a;
         outline: none;
         font-size: 18px;
-        color: #ff6e79;
+        color: #6ba46a;
         font-weight: bold;
 
         &:after {
@@ -302,7 +302,7 @@
       }
 
       button:focus {
-        box-shadow: 2px 1px 8px #ff6e7a7e;
+        box-shadow: 2px 1px 8px #6ba46a;
         font-size: 17px;
       }
 

@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect, useRef} from 'react';
 import "./notificationStyle.scss";
+import {motion} from "framer-motion"
 // Local Data
 import UserContext from '../../userData/userData';
 // Verify User: Token
@@ -12,6 +13,7 @@ function Notification(props) {
     const [userId, setUserId] = useState('');
     const [eventId, setEventId] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isOpen, setReminderIsOpen] = useState(false);
     //notification details
     const [notificationDetails, setNotificationDetails] = useState([]);
     const [reminder, setReminder] = useState([]);
@@ -61,6 +63,7 @@ function Notification(props) {
 
     // Data fetching with verified token
     // Gives back all the event invitations that the user haven't answered yet
+    // and calls notification indicator if event.length > 0
     const fecthUserUpcomingEvent = async ()=> {
             setLoading(true);
             const obj = getFromStorage("login_app");
@@ -86,17 +89,28 @@ function Notification(props) {
                   // Get all upcoming events
                   json.events.forEach(e => {
                     let students = [];
+
+                    // event declined skip
+                    const declined = e.students.filter((x) => x._id === userId && x.accepted === false);
+                    if (declined.length > 0) {
+                      return
+                    }
+                    
                     // create list of students who accepted the invite
                     e.students.forEach(student => {
+  
                       if(student.accepted === true){
                         students.push(student)
                       }
+
+                      
                     })
-                    //creators should not get their own notification
+
+                    //creators should not get their own notification and declined events
                     const eventCreator = students.filter((x) => x._id === userId)
                     // add to notificationDetails 
                     const exist = notificationDetails.filter((x) => x._id === e._id)
-                    if (exist.length >= 1 || eventCreator.length === 1) {
+                    if (exist.length >= 1 || eventCreator.length === 1 || eventCreator.accepted === false) {
                       return
                     } else {
                       notificationDetails.push({_id:e._id, creator: {_id: e.creator._id, name: e.creator.name}, location: e.location, date: e.date, students: students })
@@ -105,15 +119,17 @@ function Notification(props) {
                     notificationIndicator();
                   })
 
-                  //Get all upcoming events
+                  // Get all upcoming events
                   // if answered by user, save to "reminder"
                   json.events.forEach((e, index)=> {
                     let acceptedList = [];
 
                     e.students.forEach(student => {
                       if (student._id === userId ) {
+
                         if(student.accepted === true){
                           acceptedList.push(e)
+
                         }  
                       }
                     })
@@ -200,25 +216,39 @@ function Notification(props) {
     }, 15000)
 
 
+
+  ////////////////////////////////
+  // Onclick animation
+  ////////////////////////////////
+
+  const variants = {
+    open: { opacity: 1, height: '100%' },
+    closed: { opacity: 0, height: "0px" },
+  }
     return (<>
     
         <div className="notifications">
-        <div className="notification_tile">
-                 <div className="notification_tile_header">
+        <div className="reminder_tile" onClick={()=>setReminderIsOpen(!isOpen)}>
+                <div className="reminder_tile_header" >
                  <h4>Accepted Meetings:</h4>
                  </div>
-                 <div className="notification_tile_body">
+                 <div className="reminder_tile_body">
                     {reminder && reminder.map(meeting => {
                       return (
-                        <div className="reminder" key ={meeting._id}>
+                        < motion.div animate={isOpen ? "open" : "closed"} variants={variants} className="reminder" key ={meeting._id}>
                         <p>Created: {meeting.creator.name}</p>
                         <p>Location: <span>{meeting.location}</span></p>
                         <p>Date:  <span>{meeting.date}</span></p>
-                        </div>
+                        <p>Participants:</p> {meeting.students.map(student => {
+                          return (
+                            <p key={student._id}>- {student.name}</p>
+                          )
+                        })}
+                        </motion.div>
                       )
                     } )}
-                 </div>
 
+                 </div>
           </div>
 
           {loading ? <div className="loader"><p>Loading events ...</p></div>: 
@@ -236,7 +266,7 @@ function Notification(props) {
                  <p>Date:  <span>{notification.date}</span></p>
                  <ul>Participants:{notification.students.map(student=>{
                    return (
-                   <li key={student._id}>{ student.name}</li>
+                   <li key={student._id}>{student.name}</li>
                    )
                  })}</ul>
                  </div>

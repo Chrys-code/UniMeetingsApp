@@ -165,9 +165,9 @@ function App(props) {
             <AnimatePresence exitBeforeEnter >
             <Switch location={location} key={location.key}>
               <Route path="/" exact component={(e)=><Activities  variants={ variants } transition={transition}/>} />
-              <Route path="/events" component={(e)=><Events variants={variants} transition={transition} />} />
-              <Route path="/lists" component={(e)=><Lists variants={variants} transition={transition} /> } />
-              <Route path="/meetings" component={(e)=><Meetings variants={variants} transition={transition} /> } />
+              <Route path="/events"  component={(e)=><Events variants={variants} transition={transition} />} />
+              <Route path="/lists"  component={(e)=><Lists variants={variants} transition={transition} /> } />
+              <Route path="/meetings"  component={(e)=><Meetings variants={variants} transition={transition} /> } />
             </Switch>
             </AnimatePresence>
           </Main>

@@ -7,6 +7,106 @@
     }
   }
 
+  .reminder_tile {
+    position: relative;
+    width: 80vw;
+    margin: auto;
+    margin-top: 20px;
+    padding: 5px;
+    border-radius: 13px;
+    box-shadow: 5px 5px 10px #bdc3c5;
+    overflow: hidden;
+    cursor: pointer;
+
+    h4 {
+      font-weight: 400;
+    }
+
+    p {
+      color: #5f5f5f;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 13px;
+      box-shadow: -5px -5px 10px white;
+      pointer-events: none;
+    }
+
+    .reminder_tile_header {
+      position: relative;
+      width: 100%;
+      height: 50px;
+      margin-bottom: 10px;
+      background-image: url("../../Assets/Login/Icondropdown.png"); /* Add custom arrow */
+      background-repeat: no-repeat;
+      background-position-x: 85%;
+      background-position-y: 10%;
+
+      &:after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0px;
+        transform: translateX(-50%);
+        width: 250px;
+        height: 2px;
+        border: 1px solid grey;
+        border-radius: 2px;
+        background: grey;
+      }
+
+      h4 {
+        text-align: center;
+      }
+    }
+
+    .reminder_tile_body {
+      position: relative;
+      width: 100%;
+
+      .reminder {
+        border: 1px solid grey;
+        border-radius: 10px;
+        margin: 5px;
+        overflow: hidden;
+      }
+
+      p {
+        width: 80%;
+        margin: 4px auto 4px auto;
+        span {
+          float: right;
+        }
+      }
+
+      ul {
+        width: 80%;
+        margin: auto;
+        list-style-type: none;
+        padding-inline-start: 0px;
+
+        li {
+          margin: 10px;
+
+          &:before {
+            content: "-";
+            padding: 8px;
+          }
+
+          span {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+
   .notification_tile {
     position: relative;
     width: 80vw;

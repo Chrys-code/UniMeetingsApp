@@ -15,6 +15,11 @@ function Events(props) {
     const [year, setYear] = useState('2020');      // format yyyy-mm-dd
     const [day, setDays] = useState('01');
     const [month, setMonth] = useState('01');
+    // options
+    const [yearOpt, setYearOpt] = useState(['2020','2021', '2022'])
+    const [dayOpt, setDayOpt] = useState(['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])
+    const [monthOpt, setMonthOpt] = useState(['01','02','03','04','05','06','07','08','09','10','11','12'])
+    // feedback
     const [isLoading, setLoading] = useState(false);
     const [buttonLabel, setButtonLabel] = useState('Send')
     // Mutation
@@ -52,11 +57,16 @@ function Events(props) {
     //////////////////////////
     // Page content
     //////////////////////////
+    // This function filters out days
+    // Only past days are given
+    //////////////////////////
 
-    const days = ['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
-    const months = ['01','02','03','04','05','06','07','08','09','10','11','12']
-    const years = ['2020','2021']
 
+    useEffect(()=>{
+    // get date
+    const d = new Date();
+      setYearOpt(yearOpt.filter(x => x <= d.getFullYear()))
+    },[])
 
     //////////////////////////
     // Trusted events (input)
@@ -109,21 +119,21 @@ function Events(props) {
                 <form onSubmit={(e)=>formHandler(e)}>
                     <span>Year:</span>{" "}<br/>
                     <select onChange={(e)=>yearInputHandler(e)}>
-                    {years.map(year=>{ return(
+                    {yearOpt.map(year=>{ return(
                             <option key={year} value={year}>{year}</option>
                         )})}
                     </select> {" "}<br/>
 
                     <span>Month:</span>{" "}<br/>
                     <select onChange={(e)=>monthInputHandler(e)}> 
-                        {months.map(month=>{ return(
+                        {monthOpt.map(month=>{ return(
                             <option key={month} value={month}>{month}</option>
                         )})}
                     </select>{" "}<br/> 
 
                     <span>Day:</span>{" "}<br/>
                     <select onChange={(e)=>dayInputHandler(e)}>
-                        {days.map(day=>{ return(
+                        {dayOpt.map(day=>{ return(
                             <option key={day} value={day}>{day}</option>
                         )})}
                     </select>{" "}<br/>

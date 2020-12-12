@@ -7,6 +7,7 @@ import Listings from "./listings";
 import {motion} from 'framer-motion'
 // Local
 import UserContext from '../../userData/userData';
+import { set } from 'date-fns';
 
         // forceUpdate hook
         // for some reason after refactoring I could get React to re render child or even component itself
@@ -20,9 +21,9 @@ function Meetings(props) {
 
         const {variants, transition} = props;
         // State
-        const [year, setYear] = useState('2020'); // format yyyy-mm-dd
-        const [day, setDays] = useState('01');
-        const [month, setMonth] = useState('01');
+        const [year, setYear] = useState('Year'); // format yyyy-mm-dd
+        const [day, setDays] = useState('Day');
+        const [month, setMonth] = useState('Month');
         const [place, setPlace] = useState('');
         const [buttonLabel, setButtonLabel] = useState('Send')
 
@@ -42,15 +43,6 @@ function Meetings(props) {
         const name = userData.user.student.name;
         //Assign forceupdate hook
         const forceUpdate = useForceUpdate();
-
-        //////////////////////////
-        // Page content 
-        // format yyyy-mm-dd
-        //////////////////////////
-        const days = ['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
-        const months = ['01','02','03','04','05','06','07','08','09','10','11','12']
-        const years = ['2020','2021']
-    
 
         //////////////////////////
         // initialize state with userContext
@@ -73,6 +65,7 @@ function Meetings(props) {
         //////////////////////////
 
         async function onCreateEvent() {
+
             setLoading(true)
              await fetch("/userevent/createevent", {
               method: "POST",
@@ -113,14 +106,19 @@ function Meetings(props) {
 
     function yearInputHandler(e) {
         setYear(e.target.value);
+        console.log(e.target.value)
     }
 
     function monthInputHandler(e) {
         setMonth(e.target.value);
+        console.log(e.target.value)
+
     }
 
     function dayInputHandler(e) {
         setDays(e.target.value);
+        console.log(e.target.value)
+
     }
 
     function placeInputHandler(e) {
@@ -203,10 +201,32 @@ function Meetings(props) {
 
     function formHandler(e) {
         e.preventDefault();
-
-        if(invitedStudentsId.length === 1) {
+        if (year === 'Year' || day === 'Day' || month === 'Month') {
+            setLoading(false);
+            setButtonLabel('Invalid date');
+            setTimeout(()=>{
+                setButtonLabel('Send')
+            }, 4000)
             return
-        } else {
+        }
+        if (place === null || place === undefined || place === "" ) {
+            setLoading(false);
+            setButtonLabel('Provide place');
+            setTimeout(()=>{
+                setButtonLabel('Send')
+            }, 4000)
+
+            return
+        }
+        if(invitedStudentsId.length === 1) {
+            setLoading(false);
+            setButtonLabel('Invite others');
+            setTimeout(()=>{
+                setButtonLabel('Send')
+            }, 4000)
+
+            return
+        } 
             //fire event
             setLoading(true);
             onCreateEvent();
@@ -217,9 +237,13 @@ function Meetings(props) {
             setInvitedStudentsId(invitedStudentsId)
             // reset listing
             setInvitedStudents([])
-        }
+        
+    }
 
 
+    const buttonStyle = {
+        color: buttonLabel === 'Send' ? '#6ba46a'  : '#FF6E79',
+        boxShadow: buttonLabel === 'Send' ?  '4px 2px 10px #6ba46a' : '4px 2px 10px #FF6E79'
     }
 
 
@@ -232,12 +256,12 @@ function Meetings(props) {
                 </div>
 
              <form onSubmit={(e)=>formHandler(e)}>
-             <Dateandplace inputHandlers={{ yearInputHandler, monthInputHandler, dayInputHandler, placeInputHandler}} inputOptions={{days, months, years}} />
+             <Dateandplace inputHandlers={{ yearInputHandler, monthInputHandler, dayInputHandler, placeInputHandler}} inputValue={{year, day, month}} />
 
 
             <Listings functions={{addStudent, removeStudent, searchStudentHandler}} states={{listedStudents, invitedStudents}}/>
 
-                        {isLoading ?  <button type="submit">Loading ...</button> : <button type="submit">{buttonLabel}</button>}
+                        {isLoading ?  <button type="submit">Loading ...</button> : <button type="submit" style={buttonStyle}>{buttonLabel}</button>}
                 </form>
             </div>
         </motion.div>

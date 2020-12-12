@@ -31,7 +31,7 @@ export function Form(props) {
                         <div className="field_icon">
                             <img src={require('../../Assets/Login/lockpassword.png').default} alt=""  />
                         </div>
-                        <input name="password" type="text" placeholder="Password" onChange={(e)=>inputHandlers.passwordInputHandler(e)}/>
+                        <input name="password" type="password"  placeholder="Password" onChange={(e)=>inputHandlers.passwordInputHandler(e)}/>
                     </div>
 
                     <div className="field">
