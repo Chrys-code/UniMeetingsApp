@@ -156,6 +156,7 @@ function Filter(props) {
     /////////////////////////
     // Render students (based on order)
     // Assign status colors by populating css
+    // Retun the event.date or user.userDate which is the closest to todays date
     /////////////////////////
 
     return (<>
@@ -163,7 +164,7 @@ function Filter(props) {
                 {isLoading ? 
                 <div>Loading Students ...</div> 
                 : orderedStudents && orderedStudents.map(student => {
-                    let color = "#FF6E79";
+                    let color = "#FF6E79";  
 
                     if(student.event) {
                         let d1 = Date.now();
@@ -183,7 +184,7 @@ function Filter(props) {
                         color = '#6BA46A'
                     }
 
-                    return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{student.event.date === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span></li>
+                    return <li  style={{"--color": color}} key={student.name}>{student.name}  <span>{student.event.date === "" || student.event == null ? "--" : <Datefunction dateString={(parseISO(student.event.date) - parseISO(student.userDate) > 0 )? student.event.date : student.userDate } /> }</span></li>
                 })}
 
        </>)

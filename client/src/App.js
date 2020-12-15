@@ -106,8 +106,6 @@ function App(props) {
             setTimeout(()=>{
               setSignInErr('Login')
             }, 2000)
-            console.log(signInErr)
-
           }  
         });
     }

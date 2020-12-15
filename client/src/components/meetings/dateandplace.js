@@ -13,17 +13,31 @@ function Dateandplace(props) {
     // Page content
     //////////////////////////
     // This function filters out days
-    // Only past days are given
+    // Only future days are given to book a meeting
     //////////////////////////
 
 
     useEffect(()=>{
         // get date
         const d = new Date();
-          setDayOpt(dayOpt.filter(x => x >= d.getDate()))
-          setMonthOpt(monthOpt.filter(x => x >= (d.getMonth() + 1)))
-          setYearOpt(yearOpt.filter(x => x >= d.getFullYear()))
-    },[])
+
+        setYearOpt(yearOpt.filter(x => x >= d.getFullYear()))  
+        if(year === `${d.getFullYear()}`) {
+            setMonthOpt(monthOpt.filter(x => x >= (d.getMonth() + 1)))
+            if(month === `${(d.getMonth() + 1)}`){
+                setDayOpt(dayOpt.filter(x => x >= d.getDate()))
+
+            }
+        } else if (year !== `${d.getFullYear()}`) {
+            setMonthOpt(['01','02','03','04','05','06','07','08','09','10','11','12'])
+            if(month === `${(d.getMonth() + 1)}`){
+                setDayOpt(['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])
+
+            }
+
+        }
+        
+    },[year, month, day])
 
     
     return (

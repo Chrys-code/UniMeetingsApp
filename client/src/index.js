@@ -11,7 +11,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 const client = new ApolloClient({
   uri: 'https://unimeetingsapp.herokuapp.com/graphql'
 })
-
+//http://localhost:8080/graphql
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client} >

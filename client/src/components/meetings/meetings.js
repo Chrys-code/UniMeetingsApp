@@ -7,7 +7,6 @@ import Listings from "./listings";
 import {motion} from 'framer-motion'
 // Local
 import UserContext from '../../userData/userData';
-import { set } from 'date-fns';
 
         // forceUpdate hook
         // for some reason after refactoring I could get React to re render child or even component itself
@@ -48,15 +47,15 @@ function Meetings(props) {
         // initialize state with userContext
         //////////////////////////
         useEffect(() => {
-                setCreatorStudent({_id: id, name: name})
-                invitedStudentsId.push({_id: id, name: name, accepted: true})
-                setInvitedStudentsId(invitedStudentsId)
+            setCreatorStudent({_id: id, name: name})
+            invitedStudentsId.push({_id: id, name: name, accepted: true})
+            setInvitedStudentsId(invitedStudentsId)
         }, [id, name])
 
         // Remove current user from list
         useEffect(() => {
-                let withoutUser = students.filter((x)=> x.id !== creatorStudent._id)
-                setSearchList(withoutUser)
+            let withoutUser = students.filter((x)=> x.id !== creatorStudent._id)
+            setSearchList(withoutUser)
         }, [students, creatorStudent])
 
 
@@ -106,18 +105,15 @@ function Meetings(props) {
 
     function yearInputHandler(e) {
         setYear(e.target.value);
-        console.log(e.target.value)
     }
 
     function monthInputHandler(e) {
         setMonth(e.target.value);
-        console.log(e.target.value)
 
     }
 
     function dayInputHandler(e) {
         setDays(e.target.value);
-        console.log(e.target.value)
 
     }
 
@@ -138,7 +134,6 @@ function Meetings(props) {
 
     function addStudent(e, student) {
         e.preventDefault();
-        console.log('add')
         // prevent student being added twice to the invite list
         const index = invitedStudents.indexOf(student);
         if(index > -1) {
@@ -151,7 +146,6 @@ function Meetings(props) {
             // Add students to visible list (user can remove from here)
             invitedStudents.push(student);
             setInvitedStudents(invitedStudents)
-            console.log(invitedStudents)
             
         // REMOVE FROM CURRENT SEARCH
             const indexCurr = listedStudents.indexOf(student)
@@ -173,17 +167,17 @@ function Meetings(props) {
 
     function removeStudent(e, student) {
         e.preventDefault();
-
     // REMOVE
         // remove ids for data exchange with server
         const idIndex = invitedStudentsId.indexOf({_id: student.id, name: student.name})
-        const remainingStudentIds = invitedStudentsId.splice(idIndex, 0);
+        const remainingStudentIds = invitedStudentsId.splice(idIndex, 1);
         setInvitedStudentsId(remainingStudentIds)
 
         // Remove from lists
-        const index = invitedStudents.indexOf(student)
-        const studentsWithoutRemoved = invitedStudents.splice(index, 0)
+        const studentsWithoutRemoved = invitedStudents.filter(x => x.id !== student.id)
         setInvitedStudents(studentsWithoutRemoved)
+        console.log(studentsWithoutRemoved)
+
 
     // ADD
         // prevent student being added twice to the search list
@@ -218,7 +212,7 @@ function Meetings(props) {
 
             return
         }
-        if(invitedStudentsId.length === 1) {
+        if(invitedStudentsId.length === 1 || 0) {
             setLoading(false);
             setButtonLabel('Invite others');
             setTimeout(()=>{
@@ -242,8 +236,8 @@ function Meetings(props) {
 
 
     const buttonStyle = {
-        color: buttonLabel === 'Send' ? '#6ba46a'  : '#FF6E79',
-        boxShadow: buttonLabel === 'Send' ?  '4px 2px 10px #6ba46a' : '4px 2px 10px #FF6E79'
+        color: buttonLabel === 'Send' || 'Event created!' ? '#6ba46a'  : '#FF6E79',
+        boxShadow: buttonLabel === 'Send' || 'Event created!' ?  '4px 2px 10px #6ba46a' : '4px 2px 10px #FF6E79'
     }
 
 

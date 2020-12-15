@@ -29,7 +29,7 @@ function Listings(props) {
                                  : color='green'    
 
                                 return(
-                                        <li style={{"--color": color}} key={student.name}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
+                                        <li style={{"--color": color}} key={student.id}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
                                         <button className="remove-btn" onClick={(e)=>removeStudent(e, student)} > - </button>
                                      </li>
                                 )
@@ -61,7 +61,7 @@ function Listings(props) {
                                         : color='green'    
                                      
                                 return (
-                                    <li style={{"--color": color}} key={student.name}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
+                                    <li style={{"--color": color}} key={student.id}><p>{student.name}</p><span>{student.userDate === "" || student.event == null ? "--" : <Datefunction dateString={student.event.date} /> }</span>
                                         <button  className="add-btn" style={{color: '#6BA46A', boxShadow: '4px 2px 10px #6BA46A'}} onClick={(e)=>addStudent(e, student)}> + </button>
                                     </li>              
                                 )
