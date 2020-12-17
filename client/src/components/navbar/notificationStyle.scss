@@ -1,15 +1,19 @@
+@import "../../media.scss";
+@import "../../fontslib.scss";
+
 .notifications {
   position: relative;
 
   .loader {
     p {
+      @include mobile_p_primary_strong($pGeneralColor);
       text-align: center;
     }
   }
 
   .reminder_tile {
     position: relative;
-    width: 80vw;
+    width: 80%;
     margin: auto;
     margin-top: 20px;
     padding: 5px;
@@ -19,11 +23,11 @@
     cursor: pointer;
 
     h4 {
-      font-weight: 400;
+      @include mobile_p_primary_strong($pGeneralColor);
     }
 
     p {
-      color: #5f5f5f;
+      @include mobile_p_primary($pGeneralColor);
     }
 
     &:before {
@@ -62,6 +66,7 @@
       }
 
       h4 {
+        @include mobile_p_primary_strong($pGeneralColor);
         text-align: center;
       }
     }
@@ -78,6 +83,7 @@
       }
 
       p {
+        @include mobile_p_primary($pGeneralColor);
         width: 80%;
         margin: 4px auto 4px auto;
         span {
@@ -92,6 +98,7 @@
         padding-inline-start: 0px;
 
         li {
+          @include mobile_p_primary($pGeneralColor);
           margin: 10px;
 
           &:before {
@@ -147,6 +154,7 @@
       }
 
       h4 {
+        @include mobile_p_primary_strong($pGeneralColor);
         text-align: center;
       }
     }
@@ -162,6 +170,7 @@
       }
 
       p {
+        @include mobile_p_primary($pGeneralColor);
         width: 80%;
         margin: 4px auto 4px auto;
         span {
@@ -176,6 +185,7 @@
         padding-inline-start: 0px;
 
         li {
+          @include mobile_p_primary($pGeneralColor);
           margin: 10px;
 
           &:before {

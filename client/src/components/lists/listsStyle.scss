@@ -1,8 +1,12 @@
+@import "../../media.scss";
+@import "../../fontslib.scss";
+
 //////////////////////
 // Common components
 //////////////////////
 // Should be external css component
 //////////////////////
+
 :root {
   --color: orange;
 }
@@ -24,7 +28,7 @@
     padding-top: 20px;
     border-radius: 10px;
     box-shadow: 5px 5px 20px #bdc3c586;
-    color: #5f5f5f;
+    @include mobile_p_primary($pGeneralColor);
 
     &:before {
       content: "";
@@ -53,12 +57,11 @@
       text-align: center;
 
       h3 {
-        color: #ffa500;
-        font-weight: bold;
+        @include mobile_subheader($Header_Orange);
       }
 
       p {
-        color: #ffa500;
+        @include mobile_p_primary($Header_Orange);
       }
 
       &:after {
@@ -112,6 +115,7 @@
       padding: 0px;
 
       li {
+        @include mobile_p_primary($pGeneralColor);
         padding-bottom: 2px;
         &:before {
           content: "•";
@@ -120,8 +124,8 @@
         }
 
         &:nth-of-type(1) {
+          @include mobile_p_primary_strong($pGeneralColor);
           padding-bottom: 10px;
-          font-weight: bold;
 
           &:before {
             content: "";

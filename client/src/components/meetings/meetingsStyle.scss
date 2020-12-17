@@ -1,3 +1,6 @@
+@import "../../media.scss";
+@import "../../fontslib.scss";
+
 //////////////////////
 // Common components
 //////////////////////
@@ -23,7 +26,7 @@
     padding-top: 20px;
     border-radius: 10px;
     box-shadow: 5px 5px 20px #bdc3c586;
-    color: #5f5f5f;
+    @include mobile_p_primary($pGeneralColor);
 
     &:before {
       content: "";
@@ -50,12 +53,11 @@
       text-align: center;
 
       h3 {
-        color: #40c3fd;
-        font-weight: bold;
+        @include mobile_subheader($Header_Blue);
       }
 
       p {
-        color: #40c3fd;
+        @include mobile_p_primary($pTextBlue);
       }
 
       &:after {
@@ -79,6 +81,7 @@
         padding: 10px;
 
         p {
+          @include mobile_p_primary($pGeneralColor);
           text-align: center;
         }
 
@@ -166,6 +169,7 @@
         width: 100%;
         margin-top: 48px;
         p {
+          @include mobile_p_primary_strong($pGeneralColor);
           text-align: left;
           padding-bottom: 10px;
 
@@ -179,6 +183,7 @@
           padding: 0px;
 
           li {
+            @include mobile_p_primary($pGeneralColor);
             padding-bottom: 16px;
             display: flex;
             flex-direction: row;
@@ -191,6 +196,7 @@
             }
 
             p {
+              @include mobile_p_primary($pGeneralColor);
               text-align: left;
               padding: 0;
               margin: 0;

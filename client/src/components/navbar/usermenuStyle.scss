@@ -1,3 +1,6 @@
+@import "../../media.scss";
+@import "../../fontslib.scss";
+
 .user_menu {
   position: absolute;
   min-height: 87vh;
@@ -9,14 +12,19 @@
   padding: 0px 0px 50px 0px;
   z-index: 10;
 
+  @include sm {
+    width: 50vw;
+  }
+
   .user_menu_tile {
     position: relative;
-    width: 80vw;
+    width: 80%;
     min-height: 90px;
     margin: auto;
     padding: 5px;
     border-radius: 13px;
     box-shadow: 5px 5px 10px #bdc3c5;
+    cursor: pointer;
 
     &:before {
       content: "";
@@ -52,6 +60,7 @@
       }
 
       p {
+        @include mobile_p_primary_strong($pGeneralColor);
         text-align: center;
       }
     }
@@ -66,8 +75,8 @@
         padding-inline-start: 0px;
 
         li {
+          @include mobile_p_secondary($pGeneralColor);
           margin: 10px;
-
           span {
             float: right;
           }
@@ -75,6 +84,23 @@
       }
     }
   }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(82, 82, 82);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(146, 146, 146);
+  }
+
   .scrollable {
     overflow: scroll;
     height: 82vh;

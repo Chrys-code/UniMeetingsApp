@@ -1,0 +1,78 @@
+////////////////////////////////////////////
+// mobile
+// Font-size
+////////////////////////////////////////////
+$mobile_Header: 32px;
+$mobile_SubHeader: 22px;
+$mobile_P_Primary: 16px;
+$mobile_P_Secondary: 14px;
+
+////////////////////////////////////////////
+// Colors and font-weight
+////////////////////////////////////////////
+
+// Font-weight
+$regular: 400;
+$semiBold: 500;
+$bold: 700;
+
+// Header color
+$Header_General: #5f5f5f;
+$Header_Green: #6ba46a;
+$Header_Blue: #40c3fd;
+$Header_Orange: #ffa500;
+// Text color
+$pGeneralColor: #5f5f5f;
+$pTextGreen: #6ba46a;
+$pTextBlue: #40c3fd;
+$pTextOrange: #ffa500;
+$pWhite: white;
+// Sucess
+$ColorSucess: #43ecac;
+// Error
+$ColorError: #ff6e79;
+
+////////////////////////////////////////////
+// Font sets // mobile
+////////////////////////////////////////////
+
+//Intro
+@mixin mobile_header($color) {
+  font-size: $mobile_Header;
+  font-weight: $bold;
+  color: $color;
+}
+// Subtitle
+@mixin mobile_subheader($color) {
+  font-size: $mobile_SubHeader;
+  font-weight: $bold;
+  color: $color;
+}
+
+// Text Strong
+@mixin mobile_p_primary_strong($color) {
+  font-size: $mobile_P_Primary;
+  font-weight: $bold;
+  color: $color;
+}
+
+// Subtext Strong
+@mixin mobile_p_secondary_strong($color) {
+  font-size: $mobile_P_Secondary;
+  font-weight: $bold;
+  color: $color;
+}
+
+// Text
+@mixin mobile_p_primary($color) {
+  font-size: $mobile_P_Primary;
+  font-weight: $regular;
+  color: $color;
+}
+
+// Subtext
+@mixin mobile_p_secondary($color) {
+  font-size: $mobile_P_Secondary;
+  font-weight: $regular;
+  color: $color;
+}

@@ -2,7 +2,6 @@
 $desktop: 1200px;
 $tabletAndDesktop: 992px;
 $tablet: 768px;
-$mobile: 576px;
 
 ////////////////////////////////////////////
 // Media queries
@@ -10,7 +9,7 @@ $mobile: 576px;
 ////////////////////////////////////////////
 
 @mixin lg {
-  @media (max-width: $desktop) {
+  @media (min-width: $desktop) {
     @content;
   }
 }
@@ -20,7 +19,7 @@ $mobile: 576px;
 ////////////////////////////////////////////
 
 @mixin md {
-  @media (max-width: $tabletAndDesktop) {
+  @media (min-width: $tabletAndDesktop) {
     @content;
   }
 }
@@ -30,17 +29,7 @@ $mobile: 576px;
 ////////////////////////////////////////////
 
 @mixin sm {
-  @media (max-width: $tablet) {
-    @content;
-  }
-}
-
-////////////////////////////////////////////
-// Media max-width 576px;
-////////////////////////////////////////////
-
-@mixin xsm {
-  @media (max-width: $mobile) {
+  @media (min-width: $tablet) {
     @content;
   }
 }
