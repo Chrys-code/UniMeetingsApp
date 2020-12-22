@@ -42,6 +42,12 @@
       pointer-events: none;
     }
 
+    @include md {
+      .filter-text {
+        display: none;
+      }
+    }
+
     //////////////////////
     // Page Title
     //////////////////////
@@ -74,6 +80,10 @@
         border-radius: 10px;
         box-shadow: -5px -5px 20px white;
       }
+
+      @include md {
+        padding-bottom: 50px;
+      }
     }
 
     //////////////////////
@@ -99,6 +109,30 @@
 
       &:last-of-type {
         margin-bottom: 40px;
+      }
+
+      @include md {
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        transform: translate(-50%);
+
+        &:last-of-type {
+          position: absolute;
+          top: 50%;
+          left: 60%;
+        }
+      }
+
+      @include lg {
+        position: absolute;
+        top: 50%;
+        left: 42%;
+        transform: translate(-50%);
+
+        &:last-of-type {
+          left: 58%;
+        }
       }
     }
 
@@ -136,6 +170,10 @@
         span {
           float: right;
         }
+      }
+
+      @include md {
+        padding-top: 80px;
       }
     }
   }

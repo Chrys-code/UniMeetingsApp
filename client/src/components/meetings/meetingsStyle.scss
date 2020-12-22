@@ -27,6 +27,10 @@
     border-radius: 10px;
     box-shadow: 5px 5px 20px #bdc3c586;
     @include mobile_p_primary($pGeneralColor);
+    @include lg {
+      min-width: 1100px;
+      min-height: 700px;
+    }
 
     &:before {
       content: "";
@@ -72,6 +76,13 @@
       }
     }
     form {
+      margin: auto;
+      @include lg {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
       .meetings_details {
         position: relative;
         width: 90%;
@@ -80,9 +91,9 @@
         box-shadow: 5px 5px 20px #bdc3c586;
         padding: 10px;
 
-        p {
-          @include mobile_p_primary($pGeneralColor);
-          text-align: center;
+        @include lg {
+          width: 500px;
+          margin: 25px;
         }
 
         &:before {
@@ -94,6 +105,11 @@
           right: 0;
           border-radius: 10px;
           box-shadow: -5px -5px 20px white;
+        }
+
+        p {
+          @include mobile_p_primary($pGeneralColor);
+          text-align: center;
         }
 
         span {
@@ -125,7 +141,7 @@
 
         .field {
           position: relative;
-          width: 90%;
+          width: 270px;
           margin: 24px auto 24px auto;
 
           .field_icon {
@@ -145,6 +161,7 @@
             outline: none;
             border: none;
             height: 40px;
+            width: 210px;
             padding-left: 60px;
             border-radius: 20px;
             border: 2px solid #bdc3c53f;
@@ -168,6 +185,28 @@
       .participant_list {
         width: 100%;
         margin-top: 48px;
+
+        @include lg {
+          position: relative;
+          width: 500px;
+          margin: 25px;
+          border-radius: 10px;
+          box-shadow: 5px 5px 20px #bdc3c586;
+          padding: 10px;
+          min-width: 270px;
+
+          &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: 10px;
+            box-shadow: -5px -5px 20px white;
+          }
+        }
+
         p {
           @include mobile_p_primary_strong($pGeneralColor);
           text-align: left;
@@ -181,13 +220,21 @@
         ul {
           list-style-type: none;
           padding: 0px;
+          width: 100%;
 
           li {
+            position: relative;
             @include mobile_p_primary($pGeneralColor);
             padding-bottom: 16px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+
+            @include lg {
+              width: 80%;
+              padding-bottom: 0px;
+              margin: 10px 0px 10px 0px;
+            }
 
             &:before {
               content: "•";
@@ -223,6 +270,13 @@
                 bottom: 0;
                 border-radius: 5px;
                 box-shadow: -5px -5px 10px white;
+              }
+
+              @include lg {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                right: -70px;
               }
             }
 
@@ -282,8 +336,36 @@
 
       .search_students {
         margin-bottom: 48px;
+        @include lg {
+          position: relative;
+          width: 500px;
+          margin: 25px;
+          border-radius: 10px;
+          box-shadow: 5px 5px 20px #bdc3c586;
+          padding: 10px;
+
+          &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: 10px;
+            box-shadow: -5px -5px 20px white;
+          }
+
+          .field {
+            width: 270px;
+            input {
+              width: 210px;
+              margin: auto;
+            }
+          }
+        }
       }
-      button {
+
+      .send_btn {
         position: relative;
         width: 100%;
         height: 48px;
@@ -305,14 +387,22 @@
           border-radius: 10px;
           box-shadow: -5px -5px 10px white;
         }
+
+        @include lg {
+          position: absolute;
+          transform: translate(-50%);
+          left: 50%;
+          bottom: 25px;
+          width: 25%;
+        }
       }
 
-      button:focus {
+      .send_btn:focus {
         box-shadow: 2px 1px 8px #6ba46a;
         font-size: 17px;
       }
 
-      button:focus:after {
+      .send_btn:focus:after {
         content: "";
         box-shadow: -2px -1px 8px white;
       }

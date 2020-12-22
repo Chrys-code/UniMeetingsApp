@@ -249,18 +249,14 @@ function Meetings(props) {
                     <p>Invite others for a meeting</p>
                 </div>
 
-             <form onSubmit={(e)=>formHandler(e)}>
-             <Dateandplace inputHandlers={{ yearInputHandler, monthInputHandler, dayInputHandler, placeInputHandler}} inputValue={{year, day, month}} />
-
-
-            <Listings functions={{addStudent, removeStudent, searchStudentHandler}} states={{listedStudents, invitedStudents}}/>
-
-                        {isLoading ?  <button type="submit">Loading ...</button> : <button type="submit" style={buttonStyle}>{buttonLabel}</button>}
+                <form onSubmit={(e)=>formHandler(e)}>
+                    <Dateandplace inputHandlers={{ yearInputHandler, monthInputHandler, dayInputHandler, placeInputHandler}} inputValue={{year, day, month}} />
+                    <Listings functions={{addStudent, removeStudent, searchStudentHandler}} states={{listedStudents, invitedStudents}}/>
+                    {isLoading ?  <button className='send_btn' type="submit">Loading ...</button> : <button className='send_btn' type="submit" style={buttonStyle}>{buttonLabel}</button>}
                 </form>
             </div>
         </motion.div>
-
-                )
+    )
 }
 
 export default Meetings

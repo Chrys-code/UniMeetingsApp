@@ -5,15 +5,23 @@
   position: absolute;
   min-height: 87vh;
   width: 100vw;
-  top: 13vh;
+  top: 12vh;
   right: 0px;
   background: #e9e9e9;
   transform: translateX(100%);
-  padding: 0px 0px 50px 0px;
   z-index: 10;
 
   @include sm {
     width: 50vw;
+  }
+
+  @include md {
+    top: 8vh;
+    width: 30vw;
+  }
+
+  @include lg {
+    width: 25vw;
   }
 
   .user_menu_tile {

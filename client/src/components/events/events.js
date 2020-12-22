@@ -82,6 +82,7 @@ function Events(props) {
 
         }
         
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[year, month, day])
 
 
@@ -134,29 +135,35 @@ function Events(props) {
 
 
                 <form onSubmit={(e)=>formHandler(e)}>
-                    <span>Year:</span>{" "}<br/>
-                    <select onChange={(e)=>yearInputHandler(e)}>
-                        <option  disabled={year !== "Year" ? true : false }>Year</option>
-                    {yearOpt.map(year=>{ return(
-                            <option key={year} value={year}>{year}</option>
-                        )})}
-                    </select> {" "}<br/>
+                    <div className="form_el">
+                        <span>Year:</span>{" "}<br/>
+                        <select onChange={(e)=>yearInputHandler(e)}>
+                            <option  disabled={year !== "Year" ? true : false }>Year</option>
+                            {yearOpt.map(year=>{ return(
+                                <option key={year} value={year}>{year}</option>
+                            )})}
+                        </select> {" "}<br/>
+                    </div>
 
-                    <span>Month:</span>{" "}<br/>
-                    <select onChange={(e)=>monthInputHandler(e)}> 
-                    <option  disabled={month !== "Month" ? true : false }>Month</option>
-                        {monthOpt.map(month=>{ return(
-                            <option key={month} value={month}>{month}</option>
-                        )})}
-                    </select>{" "}<br/> 
+                    <div className="form_el">
+                        <span>Month:</span>{" "}<br/>
+                        <select onChange={(e)=>monthInputHandler(e)}> 
+                            <option  disabled={month !== "Month" ? true : false }>Month</option>
+                                {monthOpt.map(month=>{ return(
+                                    <option key={month} value={month}>{month}</option>
+                                )})}
+                        </select>{" "}<br/> 
+                    </div>
 
-                    <span>Day:</span>{" "}<br/>
-                    <select onChange={(e)=>dayInputHandler(e)}>
-                    <option  disabled={day !== "Day" ? true : false }>Day</option>
-                        {dayOpt.map(day=>{ return(
-                            <option key={day} value={day}>{day}</option>
-                        )})}
-                    </select>{" "}<br/>
+                    <div className="form_el">
+                        <span>Day:</span>{" "}<br/>
+                        <select onChange={(e)=>dayInputHandler(e)}>
+                        <option  disabled={day !== "Day" ? true : false }>Day</option>
+                                {dayOpt.map(day=>{ return(
+                                    <option key={day} value={day}>{day}</option>
+                                )})}
+                        </select>{" "}<br/>
+                    </div>
 
 
                         {isLoading ? <button type="submit">Loading ...</button> : <button type="submit">{buttonLabel}</button>}

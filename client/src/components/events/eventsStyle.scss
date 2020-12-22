@@ -37,6 +37,10 @@
       box-shadow: -5px -5px 20px white;
     }
 
+    @include md {
+      height: 70vh;
+    }
+
     //////////////////////
     // Page Title
     //////////////////////
@@ -85,6 +89,10 @@
           padding-right: 8px;
           color: orange;
         }
+      }
+
+      @include md {
+        margin: 60px 0px 60px 60px;
       }
     }
 
@@ -148,6 +156,22 @@
       button:focus:after {
         content: "";
         box-shadow: -2px -1px 8px white;
+      }
+
+      @include md {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .form_el {
+          display: inline-block;
+          margin: auto;
+          padding: 40px;
+        }
+        button {
+          position: absolute;
+          bottom: 25px;
+          width: 25%;
+        }
       }
     }
   }

@@ -12,10 +12,9 @@ function Dateandplace(props) {
     //////////////////////////
     // Page content
     //////////////////////////
-    // This function filters out days
-    // Only future days are given to book a meeting
+    // This function filter out days
+    // Only upcoming days are given to book a meeting
     //////////////////////////
-
 
     useEffect(()=>{
         // get date
@@ -37,6 +36,7 @@ function Dateandplace(props) {
 
         }
         
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[year, month, day])
 
     

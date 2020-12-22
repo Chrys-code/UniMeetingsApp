@@ -48,7 +48,7 @@ function Lists(props) {
                     <p>See the lists of students below:</p>
                 </div>
 
-                <p>Filter By:</p>
+                <p className="filter-text">Filter By:</p>
                 <select onChange={(e)=>filterStudents(e)}>
                 <option value="all" >All</option>
                 <option value="15" >Green</option>
@@ -56,7 +56,7 @@ function Lists(props) {
                 <option value="7">Red</option>
                 </select>
 
-                <p>Order By:</p>
+                <p className="filter-text">Order By:</p>
                 <select onChange={(e)=>sortStudents(e)}>
                 <option value="name" >Name</option>
                 <option value="status">Last event</option>
