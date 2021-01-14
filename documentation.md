@@ -49,9 +49,10 @@ In assessment 1. Design Thinking is used as an overarching methodology to propos
 
 <h3 style="color:#0abead; text-align: left;">4 Appendix</h3>
  - 4.1 Figure: 1
+ ![figure1](https://user-images.githubusercontent.com/55841911/104658170-26cff200-56ba-11eb-961e-7aa046332e47.png)
+ Remove free registration, propose school-end interface
+
  
-![figure1](https://user-images.githubusercontent.com/55841911/104658170-26cff200-56ba-11eb-961e-7aa046332e47.png)
-Remove free registration, propose school-end interface
 
  - 4.2 Figure: 2
  
