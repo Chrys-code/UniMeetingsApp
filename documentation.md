@@ -46,3 +46,18 @@ The implementation of agile methodology required me to understand the basics of 
 The application is working as a whole for students, but some actions are required outside the application to make it as a tool in schools. These actions are: register a school and its students; indicate illness; notify affected users in case of illness. The application needs further development where these required actions should be implemented within the application. These functionalities require more time to implement as they are proposed by the user base during development.
 
 In assessment 1. Design Thinking is used as an overarching methodology to propose and define the problem and to create a prototype version of the solution or the tool that can be used that help users solve their problem.
+
+<h3 style="color:#0abead; text-align: left;">4 Appendix</h3>
+ - 4.1 Figure: 1
+ 
+ ![figure1](https://user-images.githubusercontent.com/55841911/104658170-26cff200-56ba-11eb-961e-7aa046332e47.png)
+ Remove free registration, propose school-end interface
+
+ 
+
+ - 4.2 Figure: 2
+ 
+ ![figure2](https://user-images.githubusercontent.com/55841911/104658298-6565ac80-56ba-11eb-9229-fa9495beefd4.png)
+ Propose notifications & function to sign illness
+
+
