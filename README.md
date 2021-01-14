@@ -6,11 +6,11 @@ This is an application allows students to estimate the probability of catching t
 
 Name - Password
 
-Mina Bowers - Minapass
-Tobey Monaghan - Tobeypass
-Joseph Franco - Josephpass
-Rianne Meyers - Riannepass
-Nancy Jimenez - Nancypass
+-Mina Bowers - Minapass
+-Tobey Monaghan - Tobeypass
+-Joseph Franco - Josephpass
+-Rianne Meyers - Riannepass
+-Nancy Jimenez - Nancypass
 
 And any other user you can see within the application:
  name - firstname+"pass"
