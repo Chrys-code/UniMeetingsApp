@@ -2,6 +2,21 @@
 
 This is an application allows students to estimate the probability of catching the virus from school mates. Also help schools to explore connections between students those might be affected if someone signs illness.
 
+## Existing accounts to access the application for live testing on Heroku:
+
+Name - Password
+
+Mina Bowers - Minapass
+Tobey Monaghan - Tobeypass
+Joseph Franco - Josephpass
+Rianne Meyers - Riannepass
+Nancy Jimenez - Nancypass
+
+And any other user you can see within the application:
+ name - firstname+"pass"
+
+Capital letters and spacing matters!
+
 ## Getting Started
 
 To install locally:
