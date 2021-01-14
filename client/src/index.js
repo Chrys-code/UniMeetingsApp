@@ -12,7 +12,8 @@ const client = new ApolloClient({
   uri: 'https://unimeetingsapp.herokuapp.com/graphql'
 })
 // replace uri with localhost if in development mode
-// dev: http://localhost:8080/graphql
+// local: http://localhost:8080/graphql
+// if fails to run, check port in server > index.js or in client package.json
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client} >
