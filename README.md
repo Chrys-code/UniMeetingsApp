@@ -15,7 +15,7 @@ To install locally:
 
 ## Deployment on live system
 
-- The application built do be hosted on Heroku. 
+- The application built to be hosted on Heroku. 
 - In Client > src > index.js replace apollo client url from local to the host url (url it will be hosted on).(Local is provided only)
 - Upload to GitHub
 
@@ -26,6 +26,9 @@ To install locally:
     - Scroll down the page, click deploy
     - Heroku automatically recognize heroku-postbuild (by now it is not required as build is enough)
     - Wait until Heroku build the application
+    
+  On other live host:
+   - Run "npm run build" in the root folder
 
 ## Built With
 
