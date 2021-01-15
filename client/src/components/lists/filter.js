@@ -135,12 +135,12 @@ function Filter(props) {
             setOrderedStudents(sortedByName);
         }
 
-        // Remember filtering for green status will push those of event=null students as well
+        // Remember filtering for green status will push those of event=null students as well (solved)
         if(order === "status") {
             // with events
-            let studentsWithEvents = filterStudents.filter((x) => x.event);
+            let studentsWithEvents = filterStudents.filter((x) => x.event.date !== "");
             // without events
-            let studentsWithOutEvents = filterStudents.filter((x) => x.event == null);
+            let studentsWithOutEvents = filterStudents.filter((x) => x.event.date === "");
             // sort students with events
             let orderByStatus = studentsWithEvents.sort((a, b) => parseISO(b.event.date) - parseISO(a.event.date));
             // Push students without events

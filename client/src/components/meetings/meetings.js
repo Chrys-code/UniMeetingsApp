@@ -176,7 +176,6 @@ function Meetings(props) {
         // Remove from lists
         const studentsWithoutRemoved = invitedStudents.filter(x => x.id !== student.id)
         setInvitedStudents(studentsWithoutRemoved)
-        console.log(studentsWithoutRemoved)
 
 
     // ADD
@@ -225,13 +224,10 @@ function Meetings(props) {
             setLoading(true);
             onCreateEvent();
 
-            //cleanup (non visual data)
+            // cleanup (non visual data)
             // back to single student (creator)
             invitedStudentsId.filter((x) => x._id === creatorStudent._id);
             setInvitedStudentsId(invitedStudentsId)
-            // reset listing
-            setInvitedStudents([])
-        
     }
 
 

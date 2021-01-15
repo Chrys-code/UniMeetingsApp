@@ -112,26 +112,13 @@
       }
 
       @include md {
-        position: absolute;
-        top: 50%;
+        position: relative;
         left: 40%;
-        transform: translate(-50%);
+        transform: translateX(-50%);
 
         &:last-of-type {
-          position: absolute;
-          top: 50%;
-          left: 60%;
-        }
-      }
-
-      @include lg {
-        position: absolute;
-        top: 50%;
-        left: 42%;
-        transform: translate(-50%);
-
-        &:last-of-type {
-          left: 58%;
+          position: relative;
+          left: 45%;
         }
       }
     }
