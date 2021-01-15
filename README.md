@@ -67,5 +67,6 @@ This project was created as a University Assessment.
 
 Initial problems:
  - Any changes related to user information (GraphQL) requires to reload the application to update
+ - User details menu & notifications & red-dot in the corner of the user icon updated every 30s or by opening the menu (socket.io or webSocket would be better) 
+ - The automatic sign-in facility working only on the home-page of the application if live (works everywhere locally because it check session credentials only on the homepage/loginpage)
  - Accepted meetings will update user event date on the day the event takes place -> Heroku server shut down after use -> will not update when shut down
- - Notification about invitation to meetings are need display fixes when the app is used on desktop.
