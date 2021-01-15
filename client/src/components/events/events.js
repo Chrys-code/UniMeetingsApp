@@ -58,30 +58,36 @@ function Events(props) {
     // Page content
     //////////////////////////
     // This function filters out days
-    // Only past days are given
+    // Only past days should be given
     //////////////////////////
 
-
+    // changing based on current input
     useEffect(()=>{
         // get date
         const d = new Date();
 
+        // set year: only past should be visible
         setYearOpt(yearOpt.filter(x => x <= d.getFullYear()))  
+
+        //limit month
         if(year === `${d.getFullYear()}`) {
             setMonthOpt(monthOpt.filter(x => x <= (d.getMonth() + 1)))
-            if(month === `${(d.getMonth() + 1)}`){
-                setDayOpt(dayOpt.filter(x => x <= d.getDate()))
-
-            }
-        } else if (year !== `${d.getFullYear()}`) {
-            setMonthOpt(['01','02','03','04','05','06','07','08','09','10','11','12'])
-            if(month === `${(d.getMonth() + 1)}`){
-                setDayOpt(['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])
-
-            }
-
+    
+        } 
+        //limit day
+        if(month === `0${(d.getMonth() + 1)}` && year === `${d.getFullYear()}`){
+            setDayOpt(dayOpt.filter(x => x <= d.getDate()))
         }
-        
+        /////////////////////////////////
+        // set month to full
+        if (year !== `${d.getFullYear()}`) {
+            setMonthOpt(['01','02','03','04','05','06','07','08','09','10','11','12']) 
+        }
+        // set day to full
+        if(month !== `0${(d.getMonth() + 1)}` || year !== `${d.getFullYear()}`){
+            setDayOpt(['01', '02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])
+        }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[year, month, day])
 
@@ -105,8 +111,18 @@ function Events(props) {
     function formHandler(e) {
         setLoading(true);
         e.preventDefault();
+        if(year == "Year" || day == "Day" || month == "Month" ) {
+            setLoading(false);
+            setButtonLabel("Invalid date");
 
-        addDate({variables: {id: id, date: `${year}-${month}-${day}` }})
+            setTimeout(()=> {
+                setButtonLabel("Send")
+            }, 3000)
+
+            return
+        } else {
+            addDate({variables: {id: id, date: `${year}-${month}-${day}` }})
+        }
 
     }
 
