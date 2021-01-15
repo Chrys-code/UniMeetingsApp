@@ -64,3 +64,8 @@ To install locally:
 ## Acknowledgments
 
 This project was created as a University Assessment.
+
+Initial problems:
+ - Any changes related to user information (GraphQL) requires to reload the application to update
+ - Accepted meetings will update user event date on the day the event takes place -> Heroku server shut down after use -> will not update when shut down
+ - Notification about invitation to meetings are need display fixes when the app is used on desktop.
